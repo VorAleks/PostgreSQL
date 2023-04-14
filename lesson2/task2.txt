@@ -1,0 +1,2990 @@
+--
+
+-- PostgreSQL database dump
+
+--
+
+
+
+-- Dumped from database version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
+
+-- Dumped by pg_dump version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
+
+
+
+SET statement_timeout = 0;
+
+SET lock_timeout = 0;
+
+SET idle_in_transaction_session_timeout = 0;
+
+SET client_encoding = 'UTF8';
+
+SET standard_conforming_strings = on;
+
+SELECT pg_catalog.set_config('search_path', '', false);
+
+SET check_function_bodies = false;
+
+SET xmloption = content;
+
+SET client_min_messages = warning;
+
+SET row_security = off;
+
+
+
+SET default_tablespace = '';
+
+
+
+SET default_table_access_method = heap;
+
+
+
+--
+
+-- Name: communities; Type: TABLE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE TABLE public.communities (
+
+    id integer NOT NULL,
+
+    name character varying(120),
+
+    creator_id integer NOT NULL,
+
+    created_at timestamp without time zone
+
+);
+
+
+
+
+
+ALTER TABLE public.communities OWNER TO gb_user;
+
+
+
+--
+
+-- Name: communities_id_seq; Type: SEQUENCE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE SEQUENCE public.communities_id_seq
+
+    AS integer
+
+    START WITH 1
+
+    INCREMENT BY 1
+
+    NO MINVALUE
+
+    NO MAXVALUE
+
+    CACHE 1;
+
+
+
+
+
+ALTER TABLE public.communities_id_seq OWNER TO gb_user;
+
+
+
+--
+
+-- Name: communities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER SEQUENCE public.communities_id_seq OWNED BY public.communities.id;
+
+
+
+
+
+--
+
+-- Name: communities_users; Type: TABLE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE TABLE public.communities_users (
+
+    community_id integer,
+
+    user_id integer,
+
+    created_at character varying(255)
+
+);
+
+
+
+
+
+ALTER TABLE public.communities_users OWNER TO gb_user;
+
+
+
+--
+
+-- Name: friendship; Type: TABLE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE TABLE public.friendship (
+
+    id integer NOT NULL,
+
+    requested_by_user_id integer NOT NULL,
+
+    requested_to_user_id integer NOT NULL,
+
+    status_id integer NOT NULL,
+
+    requested_at timestamp without time zone,
+
+    confirmed_at timestamp without time zone
+
+);
+
+
+
+
+
+ALTER TABLE public.friendship OWNER TO gb_user;
+
+
+
+--
+
+-- Name: friendship_id_seq; Type: SEQUENCE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE SEQUENCE public.friendship_id_seq
+
+    AS integer
+
+    START WITH 1
+
+    INCREMENT BY 1
+
+    NO MINVALUE
+
+    NO MAXVALUE
+
+    CACHE 1;
+
+
+
+
+
+ALTER TABLE public.friendship_id_seq OWNER TO gb_user;
+
+
+
+--
+
+-- Name: friendship_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER SEQUENCE public.friendship_id_seq OWNED BY public.friendship.id;
+
+
+
+
+
+--
+
+-- Name: friendship_statuses; Type: TABLE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE TABLE public.friendship_statuses (
+
+    id integer NOT NULL,
+
+    name character varying(30)
+
+);
+
+
+
+
+
+ALTER TABLE public.friendship_statuses OWNER TO gb_user;
+
+
+
+--
+
+-- Name: friendship_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE SEQUENCE public.friendship_statuses_id_seq
+
+    AS integer
+
+    START WITH 1
+
+    INCREMENT BY 1
+
+    NO MINVALUE
+
+    NO MAXVALUE
+
+    CACHE 1;
+
+
+
+
+
+ALTER TABLE public.friendship_statuses_id_seq OWNER TO gb_user;
+
+
+
+--
+
+-- Name: friendship_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER SEQUENCE public.friendship_statuses_id_seq OWNED BY public.friendship_statuses.id;
+
+
+
+
+
+--
+
+-- Name: messages; Type: TABLE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE TABLE public.messages (
+
+    id integer NOT NULL,
+
+    from_user_id integer NOT NULL,
+
+    to_user_id integer NOT NULL,
+
+    body text,
+
+    is_important boolean,
+
+    is_delivered boolean,
+
+    created_at timestamp without time zone
+
+);
+
+
+
+
+
+ALTER TABLE public.messages OWNER TO gb_user;
+
+
+
+--
+
+-- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE SEQUENCE public.messages_id_seq
+
+    AS integer
+
+    START WITH 1
+
+    INCREMENT BY 1
+
+    NO MINVALUE
+
+    NO MAXVALUE
+
+    CACHE 1;
+
+
+
+
+
+ALTER TABLE public.messages_id_seq OWNER TO gb_user;
+
+
+
+--
+
+-- Name: messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER SEQUENCE public.messages_id_seq OWNED BY public.messages.id;
+
+
+
+
+
+--
+
+-- Name: photo; Type: TABLE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE TABLE public.photo (
+
+    id integer NOT NULL,
+
+    url character varying(255),
+
+    owner_id integer,
+
+    description text,
+
+    uploaded_at timestamp without time zone,
+
+    size integer
+
+);
+
+
+
+
+
+ALTER TABLE public.photo OWNER TO gb_user;
+
+
+
+--
+
+-- Name: photo_id_seq; Type: SEQUENCE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE SEQUENCE public.photo_id_seq
+
+    AS integer
+
+    START WITH 1
+
+    INCREMENT BY 1
+
+    NO MINVALUE
+
+    NO MAXVALUE
+
+    CACHE 1;
+
+
+
+
+
+ALTER TABLE public.photo_id_seq OWNER TO gb_user;
+
+
+
+--
+
+-- Name: photo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER SEQUENCE public.photo_id_seq OWNED BY public.photo.id;
+
+
+
+
+
+--
+
+-- Name: subscription_type; Type: TABLE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE TABLE public.subscription_type (
+
+    id integer NOT NULL,
+
+    name character varying(30)
+
+);
+
+
+
+
+
+ALTER TABLE public.subscription_type OWNER TO gb_user;
+
+
+
+--
+
+-- Name: subscription_type_id_seq; Type: SEQUENCE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE SEQUENCE public.subscription_type_id_seq
+
+    AS integer
+
+    START WITH 1
+
+    INCREMENT BY 1
+
+    NO MINVALUE
+
+    NO MAXVALUE
+
+    CACHE 1;
+
+
+
+
+
+ALTER TABLE public.subscription_type_id_seq OWNER TO gb_user;
+
+
+
+--
+
+-- Name: subscription_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER SEQUENCE public.subscription_type_id_seq OWNED BY public.subscription_type.id;
+
+
+
+
+
+--
+
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE TABLE public.subscriptions (
+
+    id integer NOT NULL,
+
+    subscriber_id integer,
+
+    subscription_id integer,
+
+    subscription_type integer,
+
+    subscription_status character varying(255) DEFAULT NULL::character varying,
+
+    created_at timestamp without time zone
+
+);
+
+
+
+
+
+ALTER TABLE public.subscriptions OWNER TO gb_user;
+
+
+
+--
+
+-- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE SEQUENCE public.subscriptions_id_seq
+
+    AS integer
+
+    START WITH 1
+
+    INCREMENT BY 1
+
+    NO MINVALUE
+
+    NO MAXVALUE
+
+    CACHE 1;
+
+
+
+
+
+ALTER TABLE public.subscriptions_id_seq OWNER TO gb_user;
+
+
+
+--
+
+-- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER SEQUENCE public.subscriptions_id_seq OWNED BY public.subscriptions.id;
+
+
+
+
+
+--
+
+-- Name: users; Type: TABLE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE TABLE public.users (
+
+    id integer NOT NULL,
+
+    first_name character varying(50) NOT NULL,
+
+    last_name character varying(50) NOT NULL,
+
+    email character varying(120) NOT NULL,
+
+    phone character varying(15),
+
+    main_photo_id integer,
+
+    created_at timestamp without time zone
+
+);
+
+
+
+
+
+ALTER TABLE public.users OWNER TO gb_user;
+
+
+
+--
+
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE SEQUENCE public.users_id_seq
+
+    AS integer
+
+    START WITH 1
+
+    INCREMENT BY 1
+
+    NO MINVALUE
+
+    NO MAXVALUE
+
+    CACHE 1;
+
+
+
+
+
+ALTER TABLE public.users_id_seq OWNER TO gb_user;
+
+
+
+--
+
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+
+
+
+--
+
+-- Name: video; Type: TABLE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE TABLE public.video (
+
+    id integer NOT NULL,
+
+    url character varying(255),
+
+    owner_id integer,
+
+    description text,
+
+    uploaded_at timestamp without time zone,
+
+    size integer
+
+);
+
+
+
+
+
+ALTER TABLE public.video OWNER TO gb_user;
+
+
+
+--
+
+-- Name: video_id_seq; Type: SEQUENCE; Schema: public; Owner: gb_user
+
+--
+
+
+
+CREATE SEQUENCE public.video_id_seq
+
+    AS integer
+
+    START WITH 1
+
+    INCREMENT BY 1
+
+    NO MINVALUE
+
+    NO MAXVALUE
+
+    CACHE 1;
+
+
+
+
+
+ALTER TABLE public.video_id_seq OWNER TO gb_user;
+
+
+
+--
+
+-- Name: video_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER SEQUENCE public.video_id_seq OWNED BY public.video.id;
+
+
+
+
+
+--
+
+-- Name: communities id; Type: DEFAULT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.communities ALTER COLUMN id SET DEFAULT nextval('public.communities_id_seq'::regclass);
+
+
+
+
+
+--
+
+-- Name: friendship id; Type: DEFAULT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.friendship ALTER COLUMN id SET DEFAULT nextval('public.friendship_id_seq'::regclass);
+
+
+
+
+
+--
+
+-- Name: friendship_statuses id; Type: DEFAULT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.friendship_statuses ALTER COLUMN id SET DEFAULT nextval('public.friendship_statuses_id_seq'::regclass);
+
+
+
+
+
+--
+
+-- Name: messages id; Type: DEFAULT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.messages ALTER COLUMN id SET DEFAULT nextval('public.messages_id_seq'::regclass);
+
+
+
+
+
+--
+
+-- Name: photo id; Type: DEFAULT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.photo ALTER COLUMN id SET DEFAULT nextval('public.photo_id_seq'::regclass);
+
+
+
+
+
+--
+
+-- Name: subscription_type id; Type: DEFAULT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.subscription_type ALTER COLUMN id SET DEFAULT nextval('public.subscription_type_id_seq'::regclass);
+
+
+
+
+
+--
+
+-- Name: subscriptions id; Type: DEFAULT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.subscriptions ALTER COLUMN id SET DEFAULT nextval('public.subscriptions_id_seq'::regclass);
+
+
+
+
+
+--
+
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+
+
+
+--
+
+-- Name: video id; Type: DEFAULT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.video ALTER COLUMN id SET DEFAULT nextval('public.video_id_seq'::regclass);
+
+
+
+
+
+--
+
+-- Data for Name: communities; Type: TABLE DATA; Schema: public; Owner: gb_user
+
+--
+
+
+
+COPY public.communities (id, name, creator_id, created_at) FROM stdin;
+
+1	id sapien. Cras	4	2022-07-28 10:59:53
+
+2	libero est, congue	7	2024-02-17 04:52:17
+
+3	dictum magna. Ut	65	2023-10-26 13:39:53
+
+4	nec, imperdiet	38	2023-08-16 11:18:33
+
+5	non, hendrerit id, ante.	86	2022-09-12 06:35:35
+
+6	Lorem ipsum dolor sit	25	2022-12-31 23:32:59
+
+7	ante ipsum primis	95	2023-09-07 12:23:24
+
+8	neque non quam. Pellentesque	62	2023-10-22 18:03:49
+
+9	sed dui. Fusce	64	2023-11-09 00:35:02
+
+10	Cras dictum ultricies	40	2022-08-07 23:40:37
+
+11	Pellentesque	79	2023-08-23 03:17:43
+
+12	magnis dis parturient	35	2023-04-04 01:43:32
+
+13	sed libero. Proin	95	2024-03-05 12:20:53
+
+14	mauris.	63	2022-08-20 00:44:38
+
+15	erat volutpat.	69	2023-02-27 15:24:47
+
+16	velit. Quisque varius. Nam	34	2022-05-28 06:05:58
+
+17	porttitor	2	2023-09-13 01:16:56
+
+18	ac, eleifend	56	2023-12-10 15:14:21
+
+19	eleifend.	70	2022-04-28 06:59:31
+
+20	Aliquam erat volutpat. Nulla	51	2023-02-07 14:51:06
+
+21	ultrices iaculis odio. Nam	51	2022-09-21 23:25:00
+
+22	fringilla cursus purus.	27	2023-05-30 13:34:36
+
+23	adipiscing	9	2022-12-28 00:39:01
+
+24	sem,	15	2022-09-11 21:02:11
+
+25	dolor. Fusce mi	94	2023-04-11 07:55:24
+
+26	adipiscing ligula.	7	2023-04-07 22:48:23
+
+27	faucibus	29	2023-10-26 20:03:05
+
+28	felis. Nulla	46	2023-07-23 08:46:44
+
+29	Suspendisse	73	2022-06-17 20:57:59
+
+30	elit sed	85	2023-02-04 22:45:00
+
+31	nec urna et arcu	36	2022-10-26 14:19:58
+
+32	posuere, enim	21	2023-03-06 23:25:16
+
+33	nec,	15	2022-10-01 15:56:13
+
+34	orci luctus	53	2023-09-04 02:49:31
+
+35	parturient montes,	83	2023-10-15 04:23:14
+
+36	at arcu. Vestibulum	70	2023-07-09 12:03:46
+
+37	Vivamus molestie	77	2022-05-20 00:00:42
+
+38	id magna et ipsum	72	2023-06-20 01:12:38
+
+39	luctus ut, pellentesque eget,	65	2022-08-25 19:46:21
+
+40	magna tellus faucibus leo,	15	2023-10-12 14:03:46
+
+41	ligula. Aliquam erat	22	2023-11-30 20:09:16
+
+42	hendrerit. Donec porttitor tellus	93	2022-12-20 22:20:16
+
+43	amet nulla. Donec	49	2024-02-24 08:06:59
+
+44	enim non	61	2022-04-27 22:26:50
+
+45	Nam ac	18	2023-03-08 09:23:40
+
+46	ac, feugiat non, lobortis	35	2024-01-01 16:58:13
+
+47	ridiculus mus. Aenean	54	2023-02-05 03:19:26
+
+48	ipsum ac	44	2022-12-01 16:33:13
+
+49	et malesuada	30	2023-04-20 06:31:19
+
+50	eu turpis.	39	2024-03-31 05:19:04
+
+51	sem, vitae aliquam	43	2023-05-18 15:43:16
+
+52	a	33	2022-07-12 00:23:50
+
+53	et, euismod et,	82	2023-09-22 20:35:14
+
+54	Nunc mauris	17	2023-10-23 00:01:36
+
+55	elit fermentum risus, at	62	2023-12-14 19:10:17
+
+56	arcu. Vestibulum ante ipsum	64	2022-11-27 08:37:57
+
+57	ante lectus convallis	69	2023-05-23 02:13:13
+
+58	mollis non, cursus	52	2022-06-27 23:39:08
+
+59	ut,	22	2023-08-29 04:07:07
+
+60	consequat enim diam	85	2023-05-10 07:51:31
+
+61	eu tellus. Phasellus	95	2023-03-12 00:48:53
+
+62	interdum ligula eu enim.	25	2024-03-05 09:18:11
+
+63	egestas rhoncus. Proin	1	2022-12-12 05:19:00
+
+64	orci, adipiscing non,	36	2022-08-01 06:40:52
+
+65	Duis volutpat nunc	17	2023-06-18 04:13:04
+
+66	scelerisque mollis.	18	2024-01-28 00:17:48
+
+67	euismod et, commodo	90	2023-09-28 16:06:30
+
+68	ut, molestie	27	2022-06-04 12:35:38
+
+69	Duis	86	2022-11-17 16:25:59
+
+70	ante ipsum	40	2024-02-13 01:12:00
+
+71	felis, adipiscing	31	2023-03-30 11:04:16
+
+72	at pede. Cras vulputate	2	2022-06-26 23:46:19
+
+73	nibh enim, gravida sit	77	2024-03-28 21:49:23
+
+74	pharetra ut, pharetra	60	2023-08-14 22:07:10
+
+75	penatibus et magnis	61	2022-04-23 00:30:13
+
+76	eleifend egestas. Sed pharetra,	18	2024-01-26 17:18:59
+
+77	ut dolor	37	2023-01-24 08:19:21
+
+78	tempus scelerisque, lorem	86	2024-01-25 22:07:03
+
+79	porttitor tellus non	3	2022-11-28 09:41:48
+
+80	feugiat placerat velit.	5	2022-06-15 00:33:26
+
+81	Donec fringilla. Donec feugiat	13	2022-12-03 02:27:05
+
+82	eget magna. Suspendisse	60	2023-09-21 08:38:30
+
+83	ornare, elit	52	2023-11-02 06:09:20
+
+84	nascetur ridiculus mus. Proin	23	2023-05-16 01:22:50
+
+85	pede, ultrices	43	2022-10-12 03:48:29
+
+86	sagittis. Duis gravida.	18	2024-01-25 04:13:17
+
+87	est. Mauris eu	41	2022-12-09 16:47:57
+
+88	fermentum vel,	40	2022-05-16 10:52:17
+
+89	massa.	55	2023-12-08 13:02:52
+
+90	turpis. Aliquam	56	2022-08-26 16:51:01
+
+91	scelerisque dui. Suspendisse	68	2023-10-05 18:58:46
+
+92	elementum	65	2023-05-26 01:04:38
+
+93	consequat, lectus sit	35	2022-07-01 06:56:10
+
+94	egestas a,	47	2023-05-25 18:15:33
+
+95	odio	21	2022-12-09 12:46:03
+
+96	tellus. Nunc	82	2022-09-24 14:17:23
+
+97	diam	35	2022-08-29 04:15:34
+
+98	risus varius orci,	85	2023-07-09 17:13:40
+
+99	eu	98	2022-10-16 13:30:16
+
+100	molestie tortor	52	2023-11-14 00:16:33
+
+\.
+
+
+
+
+
+--
+
+-- Data for Name: communities_users; Type: TABLE DATA; Schema: public; Owner: gb_user
+
+--
+
+
+
+COPY public.communities_users (community_id, user_id, created_at) FROM stdin;
+
+19	92	2022-08-30 22:36:48
+
+6	76	2023-02-24 01:17:21
+
+23	100	2024-01-01 12:37:19
+
+52	36	2023-08-25 12:51:39
+
+56	12	2024-01-24 05:27:17
+
+68	19	2024-02-14 12:06:43
+
+68	70	2024-03-13 05:26:30
+
+44	78	2023-05-24 12:59:50
+
+30	63	2022-12-01 23:38:01
+
+61	13	2023-04-25 18:03:15
+
+17	53	2022-05-10 03:15:11
+
+64	3	2022-10-18 02:57:11
+
+77	55	2022-10-20 20:10:34
+
+91	24	2023-04-26 08:25:13
+
+57	10	2022-09-15 00:04:04
+
+96	97	2022-09-22 12:09:52
+
+49	56	2022-08-27 13:13:00
+
+49	71	2022-12-01 09:30:08
+
+23	85	2024-03-23 01:05:02
+
+12	94	2022-08-19 13:44:42
+
+86	83	2023-04-06 05:30:22
+
+20	25	2022-07-19 18:57:48
+
+52	23	2022-05-25 18:17:22
+
+72	18	2023-04-23 13:44:33
+
+15	26	2023-08-28 18:49:35
+
+88	2	2023-09-27 18:06:08
+
+25	68	2022-09-24 05:32:24
+
+44	62	2023-02-16 14:59:41
+
+93	47	2022-09-09 17:03:12
+
+92	19	2022-09-13 04:22:23
+
+94	34	2022-09-19 05:00:21
+
+35	16	2023-06-08 11:08:10
+
+96	62	2022-11-12 06:05:32
+
+65	4	2023-04-26 22:36:22
+
+87	64	2023-11-19 09:13:55
+
+70	28	2023-05-07 15:13:59
+
+92	18	2023-12-07 22:06:47
+
+89	67	2023-03-28 12:37:56
+
+82	98	2024-02-20 15:34:49
+
+44	72	2023-09-11 02:15:20
+
+26	73	2023-07-08 08:38:46
+
+66	38	2022-04-14 18:46:01
+
+14	58	2022-09-25 04:07:04
+
+17	49	2024-01-14 19:44:47
+
+64	34	2022-11-23 23:57:10
+
+0	25	2022-07-25 11:19:39
+
+15	34	2022-09-04 05:41:16
+
+24	46	2022-09-06 03:31:06
+
+27	16	2023-10-20 08:49:15
+
+1	22	2022-06-27 19:06:35
+
+85	83	2022-06-06 06:15:28
+
+17	56	2023-05-07 05:12:23
+
+84	82	2023-01-17 01:30:02
+
+60	54	2024-02-07 02:06:17
+
+59	18	2023-05-28 10:53:31
+
+2	71	2023-05-10 12:57:32
+
+98	57	2022-06-09 15:19:25
+
+54	18	2022-10-09 21:11:29
+
+83	16	2023-10-27 04:58:18
+
+79	0	2022-07-11 01:38:00
+
+73	63	2023-07-01 00:02:33
+
+77	95	2022-07-18 12:50:21
+
+17	28	2022-12-07 00:47:25
+
+64	29	2022-08-21 03:28:18
+
+34	62	2023-08-26 23:20:26
+
+27	26	2023-08-22 12:38:15
+
+64	79	2023-05-16 23:52:52
+
+81	9	2023-06-13 01:37:46
+
+99	70	2022-09-04 09:42:48
+
+40	43	2023-07-28 13:54:20
+
+57	87	2022-07-04 21:14:35
+
+1	1	2023-06-20 17:22:39
+
+34	69	2023-08-09 16:34:49
+
+69	17	2022-09-30 18:09:55
+
+44	81	2022-09-06 11:24:37
+
+22	94	2022-11-02 02:13:43
+
+59	97	2022-10-14 16:23:36
+
+2	67	2022-06-14 04:36:21
+
+69	50	2023-05-23 21:41:57
+
+23	85	2022-12-29 22:53:57
+
+56	12	2023-03-17 00:40:03
+
+31	71	2022-06-09 11:08:13
+
+31	97	2024-03-22 02:10:36
+
+81	79	2024-01-25 06:05:25
+
+31	63	2023-01-12 22:37:18
+
+60	87	2022-10-19 12:39:08
+
+45	74	2023-08-29 05:29:30
+
+29	31	2022-11-17 22:25:57
+
+38	18	2023-01-28 11:39:59
+
+82	52	2023-05-14 05:56:44
+
+49	3	2022-06-08 21:09:26
+
+77	91	2022-09-20 17:18:12
+
+17	88	2023-05-14 15:40:37
+
+94	82	2024-01-15 00:21:40
+
+88	21	2023-10-22 05:12:16
+
+48	56	2024-02-23 08:13:44
+
+80	9	2023-10-05 14:58:23
+
+48	16	2023-11-12 10:17:26
+
+66	71	2022-05-08 22:41:08
+
+28	5	2022-08-22 09:08:29
+
+\.
+
+
+
+
+
+--
+
+-- Data for Name: friendship; Type: TABLE DATA; Schema: public; Owner: gb_user
+
+--
+
+
+
+COPY public.friendship (id, requested_by_user_id, requested_to_user_id, status_id, requested_at, confirmed_at) FROM stdin;
+
+1	74	7	2	2022-10-15 00:00:00	2023-03-17 04:08:13
+
+2	21	2	2	2023-11-28 00:00:00	2023-05-12 17:13:18
+
+3	17	38	2	2023-12-24 00:00:00	2022-09-22 13:13:05
+
+4	8	58	2	2023-05-04 00:00:00	2022-08-31 07:16:48
+
+5	80	38	2	2023-06-04 00:00:00	2023-02-12 06:56:34
+
+6	96	17	2	2022-10-28 00:00:00	2023-08-14 00:00:42
+
+7	62	44	1	2023-05-19 00:00:00	2023-02-25 12:31:19
+
+8	63	24	2	2023-11-14 00:00:00	2023-05-15 21:05:07
+
+9	99	53	1	2023-09-20 00:00:00	2022-05-04 17:06:50
+
+10	98	89	1	2022-11-11 00:00:00	2023-10-20 07:15:07
+
+11	80	56	2	2022-12-01 00:00:00	2024-01-19 14:47:30
+
+12	78	9	1	2022-05-14 00:00:00	2022-07-18 03:10:45
+
+13	37	60	1	2023-04-05 00:00:00	2022-05-14 16:57:24
+
+14	4	18	2	2022-10-19 00:00:00	2024-01-30 17:48:46
+
+15	23	13	2	2023-07-03 00:00:00	2024-04-09 12:24:32
+
+16	13	49	1	2024-01-23 00:00:00	2024-02-23 14:22:56
+
+17	57	57	2	2024-02-08 00:00:00	2024-02-21 19:54:43
+
+18	2	9	1	2023-11-15 00:00:00	2023-01-04 22:16:38
+
+19	40	79	2	2024-04-13 00:00:00	2023-12-13 21:40:32
+
+20	50	15	1	2024-03-07 00:00:00	2023-03-27 17:00:54
+
+21	70	49	1	2024-01-20 00:00:00	2022-12-30 01:49:00
+
+22	58	46	2	2023-08-25 00:00:00	2022-05-13 23:55:47
+
+23	95	66	2	2024-02-27 00:00:00	2022-04-17 18:54:04
+
+24	87	55	1	2023-12-23 00:00:00	2024-03-28 20:58:38
+
+25	72	22	1	2024-01-17 00:00:00	2022-12-03 11:19:10
+
+26	83	28	1	2023-09-26 00:00:00	2024-01-17 04:12:31
+
+27	53	27	2	2023-07-25 00:00:00	2024-02-07 14:16:18
+
+28	35	37	2	2023-02-12 00:00:00	2022-04-27 07:22:04
+
+29	15	23	1	2023-02-24 00:00:00	2024-03-25 14:14:50
+
+30	95	24	2	2023-12-09 00:00:00	2024-03-15 05:58:44
+
+31	16	19	1	2023-12-14 00:00:00	2023-05-06 19:21:37
+
+32	93	75	1	2022-11-09 00:00:00	2022-10-17 16:24:05
+
+33	79	59	2	2024-02-02 00:00:00	2023-05-11 22:18:47
+
+34	55	94	1	2023-07-08 00:00:00	2023-08-01 14:36:27
+
+35	64	45	2	2022-09-07 00:00:00	2023-08-05 16:04:35
+
+36	94	42	2	2023-08-24 00:00:00	2023-05-19 14:34:23
+
+37	35	68	1	2022-11-26 00:00:00	2023-01-30 23:11:02
+
+38	51	77	2	2023-07-17 00:00:00	2023-06-12 02:04:54
+
+39	33	8	2	2023-06-03 00:00:00	2022-05-19 13:19:42
+
+40	51	85	1	2023-10-07 00:00:00	2023-06-28 12:34:46
+
+41	43	74	1	2023-02-14 00:00:00	2022-12-17 20:17:45
+
+42	41	86	1	2024-04-11 00:00:00	2023-04-11 13:22:31
+
+43	54	47	1	2023-02-09 00:00:00	2024-01-11 11:06:06
+
+44	79	62	2	2022-12-06 00:00:00	2023-02-08 06:54:12
+
+45	76	17	1	2024-02-20 00:00:00	2023-03-18 06:05:47
+
+46	72	49	1	2023-04-27 00:00:00	2023-12-26 15:54:41
+
+47	29	5	1	2022-11-24 00:00:00	2023-05-25 11:30:14
+
+48	32	57	1	2024-02-16 00:00:00	2022-12-15 16:35:43
+
+49	76	95	2	2023-11-01 00:00:00	2022-12-09 19:13:10
+
+50	54	17	1	2024-01-22 00:00:00	2022-12-21 18:20:11
+
+51	33	96	2	2024-01-04 00:00:00	2022-11-10 19:30:15
+
+52	95	53	2	2022-05-12 00:00:00	2022-11-07 18:14:27
+
+53	25	4	1	2023-05-26 00:00:00	2023-12-27 09:54:43
+
+54	97	46	1	2022-07-30 00:00:00	2023-05-20 06:37:36
+
+55	38	40	1	2022-10-18 00:00:00	2023-05-20 20:56:38
+
+56	23	0	2	2022-11-23 00:00:00	2023-01-31 05:31:23
+
+57	4	53	1	2023-11-20 00:00:00	2023-02-11 19:02:26
+
+58	16	6	1	2023-12-23 00:00:00	2022-08-18 08:36:20
+
+59	97	17	1	2023-11-22 00:00:00	2023-12-27 04:00:07
+
+60	59	58	2	2022-07-04 00:00:00	2022-08-17 03:53:44
+
+61	63	24	2	2023-12-05 00:00:00	2022-07-10 01:00:18
+
+62	50	66	1	2023-11-13 00:00:00	2023-02-13 09:43:46
+
+63	33	4	2	2023-01-30 00:00:00	2022-11-23 15:38:49
+
+64	39	67	2	2022-10-18 00:00:00	2022-10-22 22:44:19
+
+65	20	100	2	2023-09-05 00:00:00	2023-07-04 02:50:20
+
+66	32	81	2	2023-10-23 00:00:00	2024-01-04 11:19:49
+
+67	9	73	2	2022-11-03 00:00:00	2023-08-17 07:10:59
+
+68	84	38	2	2023-08-05 00:00:00	2022-06-28 03:43:44
+
+69	64	21	2	2022-07-10 00:00:00	2022-07-18 00:20:24
+
+70	96	54	1	2022-09-03 00:00:00	2023-09-21 10:59:16
+
+71	72	80	2	2024-01-24 00:00:00	2024-03-27 08:07:47
+
+72	90	31	1	2023-05-17 00:00:00	2022-08-10 20:31:43
+
+73	10	3	1	2023-10-17 00:00:00	2022-04-29 21:35:02
+
+74	93	44	1	2022-10-23 00:00:00	2022-12-30 18:44:51
+
+75	24	25	1	2023-12-29 00:00:00	2022-10-09 11:29:45
+
+76	93	68	1	2022-09-29 00:00:00	2023-05-01 18:30:36
+
+77	61	48	2	2023-06-21 00:00:00	2022-12-25 11:09:04
+
+78	98	4	2	2022-12-18 00:00:00	2023-10-11 00:25:16
+
+79	92	71	2	2023-08-08 00:00:00	2022-04-20 11:28:03
+
+80	67	14	2	2022-05-04 00:00:00	2023-04-07 17:43:14
+
+81	66	94	1	2024-01-30 00:00:00	2022-06-03 07:57:02
+
+82	40	64	1	2024-04-09 00:00:00	2023-08-22 03:13:53
+
+83	10	94	2	2024-03-14 00:00:00	2023-08-30 10:39:32
+
+84	54	36	2	2022-06-03 00:00:00	2023-05-23 00:46:53
+
+85	87	6	2	2022-08-06 00:00:00	2022-12-18 22:15:26
+
+86	84	1	1	2023-01-23 00:00:00	2022-10-05 18:51:30
+
+87	91	88	2	2023-07-16 00:00:00	2024-02-16 10:39:58
+
+88	20	10	1	2022-10-07 00:00:00	2022-12-14 02:09:44
+
+89	64	70	1	2023-03-07 00:00:00	2022-04-22 15:58:58
+
+90	59	5	1	2022-06-11 00:00:00	2023-05-08 11:36:34
+
+91	28	86	1	2024-03-09 00:00:00	2023-08-15 12:34:34
+
+92	22	66	1	2023-01-31 00:00:00	2022-10-15 00:49:06
+
+93	4	26	2	2022-11-05 00:00:00	2022-07-23 20:36:31
+
+94	29	52	1	2023-06-20 00:00:00	2024-01-07 16:10:52
+
+95	81	92	1	2023-05-25 00:00:00	2023-11-24 08:23:13
+
+96	27	44	1	2022-11-10 00:00:00	2022-11-03 12:11:39
+
+97	42	29	2	2023-12-25 00:00:00	2023-05-21 20:23:23
+
+98	7	58	2	2024-02-10 00:00:00	2022-12-12 08:15:44
+
+99	37	38	1	2023-10-15 00:00:00	2024-03-05 01:33:18
+
+100	50	28	1	2022-10-11 00:00:00	2022-04-23 03:32:29
+
+\.
+
+
+
+
+
+--
+
+-- Data for Name: friendship_statuses; Type: TABLE DATA; Schema: public; Owner: gb_user
+
+--
+
+
+
+COPY public.friendship_statuses (id, name) FROM stdin;
+
+2	unfiends
+
+1	friends
+
+\.
+
+
+
+
+
+--
+
+-- Data for Name: messages; Type: TABLE DATA; Schema: public; Owner: gb_user
+
+--
+
+
+
+COPY public.messages (id, from_user_id, to_user_id, body, is_important, is_delivered, created_at) FROM stdin;
+
+1	89	4	quis massa. Mauris vestibulum, neque sed dictum eleifend, nunc risus varius orci, in consequat	t	t2024-01-20 15:48:08
+
+2	40	32	id, libero. Donec consectetuer mauris id sapien. Cras dolor dolor, tempus non, lacinia at, iaculis quis,ff	2022-09-18 09:36:10
+
+3	81	15	nunc nulla vulputate dui, nec tempus mauris erat eget ipsum. Suspendisse sagittis. Nullam vitae diam. Proin dolor. Nulla semper tellus	f	t	2023-04-04 09:14:14
+
+4	38	6	ac mattis semper, dui lectus rutrum urna, nec luctus felis purus ac tellus. Suspendisse sed dolor. Fusce mi lorem, vehicula et, rutrum eu, ultrices sit	f	f	2022-12-15 04:30:24
+
+5	32	10	risus quis diam luctus lobortis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Mauris ut quam	f	f	2024-01-10 22:18:54
+
+6	96	58	justo faucibus lectus, a sollicitudin orci sem eget massa. Suspendisse eleifend. Cras sed	t	f2023-11-25 19:34:34
+
+7	60	62	gravida sit amet, dapibus id, blandit at, nisi. Cum sociis natoque penatibus et magnis dis parturient	ff	2023-06-26 11:31:04
+
+8	82	45	Quisque fringilla euismod enim. Etiam	t	t	2022-05-25 14:52:34
+
+9	57	74	et malesuada fames	f	f	2023-05-05 06:06:10
+
+10	36	0	hendrerit. Donec porttitor tellus non magna. Nam ligula elit, pretium et, rutrum non, hendrerit id, ante. Nunc mauris sapien, cursus in, hendrerit	t	f	2023-03-08 01:26:15
+
+11	26	72	Morbi metus. Vivamus euismod urna. Nullam lobortis quam a felis ullamcorper viverra. Maecenas iaculis aliquet diam. Sed diam lorem,	t	f	2023-07-23 16:21:01
+
+12	48	98	odio a purus. Duis elementum, dui quis accumsan	f	t	2023-01-13 21:27:53
+
+13	43	65	dictum eu, placerat eget, venenatis a, magna. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam laoreet, libero et tristique pellentesque, tellus sem	f	t	2022-09-22 06:13:10
+
+14	100	65	diam luctus lobortis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per	t	t2023-08-18 23:52:23
+
+15	24	52	in faucibus orci	t	f	2022-08-07 11:44:25
+
+16	34	54	natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin vel nisl.	t	t2022-10-10 13:37:40
+
+17	97	75	mauris sagittis placerat. Cras	f	t	2023-09-01 05:41:43
+
+18	75	32	ultricies dignissim lacus. Aliquam rutrum lorem ac risus. Morbi metus. Vivamus euismod urna. Nullam	tt	2024-03-08 03:46:38
+
+19	46	66	ullamcorper. Duis cursus, diam at pretium aliquet, metus urna convallis erat, eget tincidunt dui augue euf	f	2024-03-29 17:12:24
+
+20	22	96	eu augue porttitor interdum.	f	f	2023-08-16 12:21:49
+
+21	55	78	mauris erat eget ipsum.	f	f	2022-05-21 21:08:17
+
+22	9	80	rutrum eu, ultrices	f	f	2023-05-12 06:04:35
+
+23	80	22	Aliquam ultrices iaculis odio. Nam interdum enim non nisi. Aenean eget metus. In nec orci. Donec nibh. Quisque nonummy ipsum non arcu.	t	t	2023-09-20 07:58:04
+
+24	15	13	libero. Morbi accumsan laoreet ipsum. Curabitur consequat, lectus sit amet	f	f	2023-06-02 20:52:42
+
+25	2	79	eu, placerat eget,	f	t	2022-12-25 04:15:07
+
+26	63	10	Integer id magna et ipsum cursus vestibulum. Mauris magna. Duis dignissim tempor arcu. Vestibulum ut erosf	f	2022-09-15 02:33:01
+
+27	55	57	enim non nisi. Aenean eget metus. In nec orci. Donec nibh. Quisque nonummy ipsum	f	t	2023-07-21 00:05:34
+
+28	84	92	eleifend vitae, erat. Vivamus nisi. Mauris nulla. Integer urna. Vivamus molestie dapibus ligula. Aliquam erat volutpat. Nulla dignissim. Maecenas ornare egestas ligula. Nullam	f	t	2023-08-02 03:03:39
+
+29	87	69	vestibulum massa rutrum magna. Cras convallis convallis dolor. Quisque	f	f	2023-12-13 20:35:34
+
+30	84	26	molestie sodales. Mauris blandit enim consequat purus. Maecenas libero est, congue a, aliquet vel, vulputate eu, odio.	f	f	2023-02-16 01:22:03
+
+31	53	55	semper, dui lectus rutrum urna, nec luctus felis purus ac tellus.	f	f	2024-04-11 11:11:43
+
+32	96	14	posuere cubilia Curae Phasellus ornare. Fusce mollis. Duis sit amet diam eu dolor egestas rhoncus. Proin nisl sem, consequat nec, mollis vitae, posuere	f	f	2023-03-23 18:37:59
+
+33	77	64	netus et malesuada fames ac turpis egestas. Fusce aliquet magna a neque. Nullam ut nisi a odio semper cursus. Integer mollis.	f	t	2023-07-10 04:05:53
+
+34	93	37	at pretium aliquet, metus urna convallis erat, eget tincidunt dui	f	f	2023-01-22 15:10:19
+
+35	23	18	Donec at arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae Donec tincidunt. Donec vitae erat vel pede blandit congue. In scelerisque scelerisque dui.	t	f	2023-07-01 17:08:24
+
+36	70	37	consequat enim diam vel arcu. Curabitur ut odio vel est tempor bibendum. Donec felis orci, adipiscing non,	t	f	2023-12-07 12:31:53
+
+37	74	25	scelerisque neque. Nullam nisl. Maecenas malesuada	f	t	2023-04-29 04:13:05
+
+38	86	93	egestas hendrerit neque. In ornare sagittis felis. Donec tempor, est ac mattis semper, dui lectus	ft	2022-10-07 23:17:57
+
+39	60	13	mattis semper, dui lectus rutrum urna, nec luctus felis purus ac tellus. Suspendisse sed dolor. Fusce	ft	2022-10-03 17:09:55
+
+40	42	4	tincidunt, nunc ac mattis ornare, lectus ante dictum mi, ac mattis velit justo	t	t	2022-10-06 18:42:18
+
+41	72	40	enim non nisi. Aenean eget metus. In nec orci. Donec nibh. Quisque nonummy ipsum	t	t	2023-02-26 08:05:22
+
+42	60	67	lobortis tellus	t	t	2022-05-16 06:45:47
+
+43	99	64	libero nec ligula consectetuer rhoncus. Nullam velit dui, semper et, lacinia vitae, sodales at, velit. Pellentesque ultricies dignissim lacus. Aliquam rutrum lorem ac risus. Morbi metus. Vivamus	f	t	2023-02-20 15:14:45
+
+44	78	56	sed dictum eleifend, nunc risus varius orci, in consequat enim diam vel arcu. Curabitur ut odio vel est	ff	2022-11-17 23:41:04
+
+45	86	79	Fusce dolor quam, elementum at, egestas a, scelerisque sed, sapien. Nunc pulvinar arcu et pede. Nunc sed orci lobortis augue	t	t	2022-05-29 08:26:03
+
+46	30	12	Suspendisse dui. Fusce diam nunc, ullamcorper eu, euismod ac, fermentum vel, mauris. Integer sem elit, pharetra ut, pharetra sed, hendrerit a, arcu. Sed et	f	f	2024-04-05 23:25:00
+
+47	73	63	ridiculus mus. Aenean eget	t	f	2023-05-29 00:33:52
+
+48	65	56	magna. Praesent interdum ligula eu enim. Etiam imperdiet dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est ac facilisis	f	f	2022-10-19 12:54:21
+
+49	44	74	euismod mauris eu elit. Nulla facilisi. Sed	f	f	2023-10-16 10:38:51
+
+50	94	4	Donec est mauris, rhoncus id, mollis nec, cursus a, enim. Suspendisse aliquet, sem ut cursus luctus, ipsum leo elementum sem,	t	f	2022-08-08 09:49:39
+
+51	79	74	vel pede blandit congue. In scelerisque scelerisque dui. Suspendisse ac metus vitae velit egestas lacinia. Sed	f	f	2022-12-14 14:45:56
+
+52	84	43	interdum enim non nisi. Aenean eget metus. In nec orci. Donec nibh. Quisque nonummy ipsum non arcu. Vivamus sit amet risus. Donec egestas. Aliquam	f	f	2024-02-25 00:01:26
+
+53	60	85	non massa non ante bibendum ullamcorper. Duis cursus, diam at pretium aliquet, metus urna convallis erat, eget tincidunt dui augue eu tellus. Phasellus elit pede, malesuada vel,	f	t	2023-12-10 03:48:42
+
+54	51	13	vulputate eu, odio. Phasellus at augue id ante dictum cursus. Nunc mauris elit, dictum eu, eleifend nec, malesuada ut, sem.	f	f	2023-05-14 13:39:24
+
+55	48	98	ridiculus mus. Proin vel nisl.	t	t	2024-03-24 04:52:44
+
+56	79	90	a purus. Duis elementum, dui quis accumsan convallis, ante lectus convallis est, vitae sodales nisi magna sed dui. Fusce aliquam, enim nec tempus scelerisque, lorem ipsum	t	f	2024-04-07 10:43:39
+
+57	58	82	metus vitae velit egestas lacinia. Sed congue, elit sed consequat auctor, nunc nulla vulputate dui, nec tempus mauris erat eget ipsum. Suspendisse sagittis. Nullam vitae	f	f	2024-03-20 23:48:17
+
+58	24	60	massa. Mauris vestibulum, neque sed dictum eleifend, nunc risus varius orci, in consequat enim diam vel arcu. Curabitur ut odio vel	t	f	2023-09-22 17:40:38
+
+59	5	38	nibh lacinia orci, consectetuer euismod est arcu ac orci.	t	f	2023-06-25 23:01:50
+
+60	88	64	Nulla tincidunt, neque vitae semper egestas, urna justo faucibus lectus, a sollicitudin orci sem eget massa. Suspendisse eleifend. Cras sed leo. Cras vehicula aliquet libero. Integer in magna. Phasellus	t	f	2023-02-04 06:19:00
+
+61	94	33	tempus scelerisque, lorem ipsum sodales	f	t	2024-02-13 11:40:06
+
+62	25	84	nascetur ridiculus mus. Proin vel arcu eu odio tristique pharetra. Quisque	t	t	2023-08-12 05:39:20
+
+63	22	86	dictum placerat, augue. Sed molestie. Sed id risus quis diam luctus lobortis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos.	t	f	2022-04-25 00:12:45
+
+64	39	31	diam at pretium aliquet, metus urna convallis erat, eget tincidunt dui augue eu tellus. Phasellus elit pede, malesuada vel, venenatis vel, faucibus id, libero. Donec consectetuer	f	t	2023-09-28 16:59:45
+
+65	9	58	In condimentum. Donec at arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere	tt	2023-02-09 22:14:27
+
+66	55	32	ut mi. Duis risus odio, auctor vitae, aliquet nec, imperdiet nec, leo. Morbi neque tellus, imperdiet non, vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem	t	f	2023-03-20 06:08:45
+
+67	91	25	Mauris vel turpis. Aliquam adipiscing lobortis risus. In mi pede, nonummy ut, molestie in, tempus eu, ligula. Aenean euismod mauris eu elit. Nulla facilisi. Sed neque. Sed eget lacus.	t	f	2022-11-09 03:11:59
+
+68	31	9	hendrerit. Donec porttitor tellus non magna. Nam ligula elit, pretium et, rutrum non, hendrerit id, ante. Nunc mauris sapien, cursus in, hendrerit consectetuer, cursus et, magna. Praesent interdum ligula eu	f	t	2022-09-30 19:46:55
+
+69	22	14	posuere cubilia Curae Donec tincidunt. Donec vitae erat vel pede blandit	t	t	2023-08-07 22:11:50
+
+70	57	70	mauris. Suspendisse aliquet molestie tellus. Aenean egestas hendrerit neque. In ornare sagittis felis. Donec tempor, est ac mattis semper, dui lectus rutrum urna, nec luctus felis purus ac tellus. Suspendisse	t	t	2022-09-29 21:58:34
+
+71	28	30	quis diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce aliquet magna a neque. Nullam ut nisi a odio	t	t	2022-09-11 03:50:32
+
+72	47	71	eleifend non, dapibus rutrum,	t	t	2023-12-24 01:43:59
+
+73	82	56	libero mauris, aliquam eu, accumsan sed, facilisis vitae, orci. Phasellus dapibus quam quis	f	f2023-02-01 02:33:44
+
+74	92	36	magna. Ut tincidunt orci quis lectus. Nullam suscipit, est ac	t	f	2022-09-27 00:23:56
+
+75	19	66	tempus non, lacinia at, iaculis quis, pede. Praesent eu dui. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean eget magna.	t	f	2023-07-13 18:23:34
+
+76	88	98	felis purus ac tellus. Suspendisse sed dolor. Fusce mi lorem, vehicula et, rutrum eu, ultrices sit amet, risus. Donec nibh enim, gravida sit amet, dapibus id, blandit	f	f	2023-03-15 10:12:55
+
+77	19	4	consectetuer euismod est arcu ac orci. Ut semper	f	t	2022-12-01 19:49:42
+
+78	9	15	eleifend egestas. Sed pharetra, felis eget varius ultrices, mauris ipsum porta elit, a feugiat tellus lorem eu metus. In lorem. Donec elementum, lorem ut aliquam iaculis, lacus pede	f	t	2023-06-20 15:56:38
+
+79	96	47	Sed nec metus facilisis lorem tristique aliquet. Phasellus fermentum convallis ligula. Donec luctus aliquet odio. Etiam ligula tortor, dictum	t	f	2022-08-25 04:58:57
+
+80	43	95	non, cursus non, egestas a, dui. Cras pellentesque. Sed	t	f	2022-10-12 19:18:20
+
+81	91	54	metus urna convallis erat, eget tincidunt dui augue eu tellus.	t	t	2022-11-20 07:45:20
+
+82	48	84	mauris ipsum porta elit, a feugiat tellus lorem eu metus. In	f	t	2023-12-10 23:26:17
+
+83	68	26	odio vel est tempor bibendum. Donec felis orci, adipiscing non, luctus sit amet, faucibus ut, nulla. Cras eu tellus eu augue porttitor interdum. Sed auctor odio a purus.	f	f	2024-01-08 04:53:25
+
+84	52	72	tempus eu, ligula. Aenean euismod mauris eu elit. Nulla facilisi. Sed neque. Sed eget lacus. Mauris	ft	2022-11-10 20:24:31
+
+85	99	2	vulputate velit eu sem. Pellentesque ut ipsum ac mi eleifend egestas. Sed pharetra,	t	t	2023-05-16 03:03:22
+
+86	77	24	cursus et, magna. Praesent interdum ligula eu enim. Etiam imperdiet dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est ac facilisis facilisis, magna tellus faucibus leo, in lobortis	f	t	2022-06-09 13:34:13
+
+87	51	92	nec metus facilisis lorem tristique aliquet. Phasellus fermentum convallis ligula. Donec luctus aliquet odio. Etiam ligula tortor,	t	t	2024-01-10 08:08:17
+
+88	33	90	magna a neque. Nullam ut nisi a odio semper cursus. Integer mollis. Integer tincidunt aliquam arcu. Aliquam ultrices	f	t	2023-08-17 09:35:50
+
+89	51	12	ligula. Aenean euismod mauris eu elit. Nulla facilisi. Sed neque. Sed eget lacus. Mauris non dui nec urnaf	f	2023-09-01 17:38:38
+
+90	36	53	sit amet ultricies sem magna nec quam. Curabitur vel lectus. Cum sociis	f	t	2022-09-22 06:43:03
+
+91	3	98	suscipit, est ac facilisis facilisis, magna tellus faucibus leo, in lobortis tellus justo sit amet nulla. Donec non justo. Proin non massa non ante bibendum ullamcorper. Duis cursus,	t	f	2023-03-27 06:11:21
+
+92	11	80	ante ipsum primis in faucibus orci luctus	t	t	2022-10-02 10:32:57
+
+93	36	78	rhoncus. Proin nisl sem, consequat nec, mollis vitae, posuere at, velit. Cras lorem lorem, luctus ut,	tt	2022-06-02 03:32:18
+
+94	35	5	Maecenas iaculis aliquet diam. Sed diam lorem, auctor quis, tristique ac, eleifend vitae,	t	t2024-02-01 23:34:29
+
+95	42	65	montes, nascetur ridiculus mus. Aenean eget magna. Suspendisse tristique neque venenatis lacus. Etiam bibendum fermentum metus. Aenean sed pede nec ante blandit viverra. Donec tempus, lorem fringilla ornare placerat,	t	t	2023-06-08 15:27:08
+
+96	32	80	sodales nisi magna sed	t	f	2023-03-17 13:44:23
+
+97	53	45	dolor quam, elementum at, egestas a, scelerisque sed, sapien. Nunc pulvinar arcu et pede. Nunc sed orci lobortis augue scelerisque mollis. Phasellus libero mauris, aliquam eu, accumsan sed,	t	t	2022-07-10 12:14:24
+
+98	5	47	Donec porttitor tellus non magna. Nam ligula elit, pretium et, rutrum non, hendrerit id, ante. Nunc mauris sapien, cursus	f	t	2023-01-24 05:54:59
+
+99	45	75	penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean eget magna. Suspendisse tristique neque venenatis	t	f	2023-08-01 20:03:06
+
+100	42	82	faucibus lectus, a sollicitudin orci sem eget massa. Suspendisse eleifend. Cras sed leo. Cras vehicula aliquet libero. Integer in magna. Phasellus dolor elit, pellentesque	f	t	2022-06-14 23:31:57
+
+\.
+
+
+
+
+
+--
+
+-- Data for Name: photo; Type: TABLE DATA; Schema: public; Owner: gb_user
+
+--
+
+
+
+COPY public.photo (id, url, owner_id, description, uploaded_at, size) FROM stdin;
+
+1	http://pinterest.com?search=1&q=de	54	nunc risus varius orci, in	2023-01-22 00:00:00	918299
+
+2	https://bbc.co.uk?gi=100	84	venenatis vel, faucibus id,	2022-07-03 00:00:00	2538905
+
+3	https://baidu.com?gi=100	34	rhoncus. Proin nisl sem, consequat nec,	2023-05-04 00:00:00	2010065
+
+4	http://nytimes.com?ab=441&aad=2	69	tellus eu augue porttitor interdum.	2022-10-13 00:00:00	1794754
+
+5	http://pinterest.com?p=8	61	magna tellus faucibus leo, in lobortis	2024-02-23 00:00:00	1488199
+
+6	https://nytimes.com?p=8	26	mus. Donec dignissim magna a tortor. Nunc commodo auctor velit.	2022-12-03 00:00:00	117824
+
+7	http://nytimes.com?k=0	59	velit. Pellentesque ultricies dignissim lacus. Aliquam rutrum	2023-06-26 00:00:00	1913301
+
+8	https://nytimes.com?client=g	76	odio. Phasellus at augue id ante	2023-10-15 00:00:00	2565332
+
+9	http://guardian.co.uk?gi=100	43	Quisque libero lacus, varius et, euismod	2023-06-15 00:00:00	1775083
+
+10	https://wikipedia.org?ad=115	42	Nunc pulvinar	2023-07-20 00:00:00	2785818
+
+11	https://pinterest.com?search=1&q=de	50	Etiam laoreet, libero et tristique	2023-05-09 00:00:00	2172851
+
+12	https://nytimes.com?p=8	87	massa. Integer vitae nibh. Donec est mauris,	2022-07-24 00:00:00	1976495
+
+13	https://yahoo.com?search=1&q=de	14	Curae Donec tincidunt. Donec vitae	2023-08-19 00:00:00	2586804
+
+14	http://yahoo.com?q=test	81	at pede.	2022-11-08 00:00:00	2451099
+
+15	https://youtube.com?search=1	37	ornare tortor at risus. Nunc ac sem ut	2023-08-05 00:00:00	2419517
+
+16	https://cnn.com?ad=115	5	dolor sit amet, consectetuer	2023-05-07 00:00:00	2830503
+
+17	http://zoom.us?gi=100	61	ante dictum mi,	2023-07-25 00:00:00	1402358
+
+18	http://ebay.com?gi=100	1	Fusce diam	2024-04-05 00:00:00	769662
+
+19	http://guardian.co.uk?q=11	77	arcu. Aliquam ultrices iaculis odio. Nam	2023-02-15 00:00:00	2765473
+
+20	http://google.com?q=4	19	mauris. Integer sem elit, pharetra ut, pharetra sed, hendrerit a,	2022-05-22 00:00:00	1692618
+
+21	https://naver.com?ab=441&aad=2	61	ante. Vivamus non lorem vitae odio	2023-04-03 00:00:00	2589265
+
+22	https://twitter.com?q=test	73	amet nulla. Donec non justo. Proin non	2023-10-11 00:00:00	2908572
+
+23	https://zoom.us?q=11	84	facilisis. Suspendisse commodo tincidunt nibh. Phasellus nulla. Integer vulputate,	2022-11-02 00:00:00	2054297
+
+24	http://twitter.com?search=1	33	ornare, facilisis eget, ipsum. Donec sollicitudin adipiscing ligula. Aenean	2023-05-25 00:00:00	1928553
+
+25	http://nytimes.com?ab=441&aad=2	98	elit. Aliquam auctor, velit eget laoreet	2022-05-21 00:00:00	2626853
+
+26	https://yahoo.com?client=g	98	mollis. Integer	2022-12-28 00:00:00	1041096
+
+27	http://baidu.com?k=0	29	eu, ultrices sit amet, risus. Donec	2022-05-12 00:00:00	2931778
+
+28	https://facebook.com?client=g	16	scelerisque neque	2022-08-13 00:00:00	1656731
+
+29	https://facebook.com?ab=441&aad=2	15	molestie tortor nibh sit amet orci. Ut sagittis	2022-09-01 00:00:00	602652
+
+30	https://whatsapp.com?search=1&q=de	37	fames ac turpis egestas. Fusce aliquet magna a neque. Nullam	2023-06-30 00:00:00	2931418
+
+31	https://whatsapp.com?search=1&q=de	22	quam. Curabitur vel lectus. Cum	2022-10-25 00:00:00	1632120
+
+32	https://zoom.us?q=4	21	vulputate ullamcorper magna. Sed eu eros. Nam consequat dolor vitae	2022-08-06 00:00:00	1071011
+
+33	http://cnn.com?page=1&offset=1	29	felis purus ac tellus. Suspendisse sed dolor.	2022-07-02 00:00:00	1609984
+
+34	http://yahoo.com?page=1&offset=1	52	at augue id ante dictum cursus. Nunc mauris	2023-04-17 00:00:00	2567686
+
+35	http://cnn.com?q=test	2	libero mauris, aliquam	2022-12-11 00:00:00	2632953
+
+36	http://youtube.com?client=g	47	aliquet	2023-09-27 00:00:00	2958603
+
+37	http://pinterest.com?q=11	62	justo sit amet nulla. Donec non justo. Proin non massa	2023-02-01 00:00:00	301462
+
+38	http://nytimes.com?gi=100	20	Praesent interdum ligula eu enim. Etiam imperdiet	2023-04-23 00:00:00	2549791
+
+39	https://ebay.com?q=test	72	ultrices posuere cubilia Curae Donec	2023-10-22 00:00:00	1361114
+
+40	http://bbc.co.uk?client=g	9	eget tincidunt dui augue eu tellus. Phasellus elit	2024-02-28 00:00:00	230402
+
+41	http://nytimes.com?k=0	53	interdum	2023-02-16 00:00:00	1556627
+
+42	https://twitter.com?str=se	95	Nam tempor diam	2023-06-20 00:00:00	866560
+
+43	http://twitter.com?search=1	22	ut erat. Sed nunc est, mollis non, cursus	2022-11-26 00:00:00	637653
+
+44	http://walmart.com?ad=115	12	sodales. Mauris blandit enim consequat	2023-08-22 00:00:00	1566514
+
+45	http://nytimes.com?p=8	57	Quisque ac libero	2022-10-04 00:00:00	2528487
+
+46	http://ebay.com?search=1	23	dolor sit amet, consectetuer adipiscing elit. Curabitur sed tortor.	2022-11-03 00:00:00	901627
+
+47	http://facebook.com?q=11	38	ac mattis	2023-04-24 00:00:00	2824812
+
+48	http://netflix.com?k=0	45	luctus ut, pellentesque eget,	2022-06-02 00:00:00	7228
+
+49	http://bbc.co.uk?q=4	46	congue	2024-03-17 00:00:00	537525
+
+50	http://yahoo.com?g=1	41	lacus. Ut nec urna et	2024-01-23 00:00:00	2463308
+
+51	http://pinterest.com?k=0	37	Mauris blandit enim consequat purus. Maecenas libero est, congue	2023-07-18 00:00:00	981841
+
+52	http://pinterest.com?client=g	83	lacus. Aliquam rutrum lorem	2023-09-28 00:00:00	2555458
+
+53	https://nytimes.com?q=0	22	aptent taciti sociosqu ad litora	2023-07-10 00:00:00	40308
+
+54	http://cnn.com?page=1&offset=1	100	nibh	2023-04-20 00:00:00	390058
+
+55	http://zoom.us?ad=115	70	ullamcorper viverra. Maecenas iaculis aliquet diam. Sed diam lorem,	2022-09-15 00:00:00	1302180
+
+56	http://whatsapp.com?page=1&offset=1	93	enim nec tempus scelerisque,	2023-05-13 00:00:00	1380093
+
+57	https://cnn.com?page=1&offset=1	3	sed dui. Fusce aliquam, enim nec	2023-09-17 00:00:00	491286
+
+58	http://ebay.com?ad=115	12	Quisque purus sapien, gravida	2023-04-10 00:00:00	898464
+
+59	https://twitter.com?page=1&offset=1	15	Curabitur sed tortor.	2023-02-14 00:00:00	2299320
+
+60	https://twitter.com?q=4	65	dignissim tempor arcu. Vestibulum	2022-11-30 00:00:00	2233490
+
+61	http://baidu.com?ab=441&aad=2	0	mauris sapien, cursus in, hendrerit consectetuer, cursus et, magna. Praesent	2022-10-07 00:00:00	2810581
+
+62	http://walmart.com?q=11	49	Nam tempor diam dictum sapien. Aenean massa.	2024-01-13 00:00:00	2910925
+
+63	http://naver.com?q=11	93	at risus.	2023-06-08 00:00:00	2176506
+
+64	https://google.com?client=g	36	suscipit nonummy. Fusce fermentum fermentum arcu. Vestibulum	2022-08-29 00:00:00	1318044
+
+65	https://whatsapp.com?q=test	28	elit, a feugiat tellus lorem eu metus. In lorem. Donec	2022-09-16 00:00:00	758543
+
+66	http://nytimes.com?q=0	40	blandit viverra. Donec tempus, lorem fringilla ornare placerat,	2023-03-24 00:00:00	38341
+
+67	https://yahoo.com?g=1	91	eu elit. Nulla facilisi. Sed neque. Sed eget	2022-12-18 00:00:00	1197943
+
+68	http://twitter.com?gi=100	24	eleifend egestas. Sed pharetra, felis eget varius ultrices, mauris ipsum	2022-09-22 00:00:00	1373634
+
+69	http://yahoo.com?search=1&q=de	42	egestas lacinia. Sed congue, elit sed consequat auctor, nunc nulla	2023-11-26 00:00:00	1591063
+
+70	https://instagram.com?ab=441&aad=2	17	nec,	2023-04-09 00:00:00	379156
+
+71	http://zoom.us?q=11	94	Phasellus dolor elit,	2023-08-03 00:00:00	1594167
+
+72	https://youtube.com?search=1	96	ipsum dolor sit amet, consectetuer	2023-11-21 00:00:00	2168919
+
+73	http://facebook.com?gi=100	96	interdum. Sed auctor	2022-07-15 00:00:00	1078589
+
+74	https://walmart.com?q=4	97	sapien. Cras dolor	2022-11-28 00:00:00	2768762
+
+75	https://facebook.com?q=test	54	lorem, vehicula et,	2022-11-08 00:00:00	1359111
+
+76	https://yahoo.com?g=1	65	nonummy ac, feugiat non, lobortis quis, pede. Suspendisse	2022-06-26 00:00:00	1183120
+
+77	https://ebay.com?page=1&offset=1	15	non leo. Vivamus nibh	2024-01-16 00:00:00	80362
+
+78	https://youtube.com?page=1&offset=1	66	faucibus ut, nulla. Cras eu tellus	2023-04-12 00:00:00	1417572
+
+79	http://whatsapp.com?ab=441&aad=2	40	luctus aliquet	2022-07-30 00:00:00	777628
+
+80	https://yahoo.com?k=0	92	bibendum.	2023-10-30 00:00:00	2631267
+
+81	https://google.com?q=4	62	dui. Cras pellentesque. Sed dictum. Proin eget odio. Aliquam vulputate	2022-11-29 00:00:00	1255572
+
+82	http://ebay.com?q=0	3	ultricies	2022-06-26 00:00:00	1481353
+
+83	http://bbc.co.uk?ad=115	21	amet nulla. Donec non justo. Proin non massa non ante	2024-03-20 00:00:00	2567841
+
+84	http://guardian.co.uk?k=0	34	viverra. Donec tempus, lorem fringilla	2022-08-15 00:00:00	281569
+
+85	https://zoom.us?k=0	100	ut cursus luctus, ipsum	2023-08-01 00:00:00	2322817
+
+86	http://cnn.com?str=se	47	risus varius orci, in consequat enim	2023-07-13 00:00:00	2128943
+
+87	http://bbc.co.uk?ab=441&aad=2	8	eget mollis lectus pede et risus.	2022-12-04 00:00:00	1611584
+
+88	http://walmart.com?ab=441&aad=2	2	Phasellus	2023-11-27 00:00:00	85837
+
+89	https://netflix.com?q=test	55	lectus convallis est, vitae sodales nisi magna sed dui.	2023-03-27 00:00:00	2153593
+
+90	https://facebook.com?k=0	65	ornare. Fusce mollis. Duis sit	2023-12-04 00:00:00	2833619
+
+91	https://guardian.co.uk?ab=441&aad=2	80	Duis cursus, diam at pretium	2022-06-13 00:00:00	1154238
+
+92	http://instagram.com?q=4	14	Quisque ornare	2022-10-14 00:00:00	1001556
+
+93	http://baidu.com?g=1	3	aliquam	2022-05-31 00:00:00	2764382
+
+94	http://facebook.com?gi=100	18	eget massa. Suspendisse eleifend. Cras sed leo. Cras vehicula aliquet	2022-06-22 00:00:00	618799
+
+95	https://wikipedia.org?str=se	70	tristique aliquet. Phasellus fermentum convallis ligula. Donec luctus aliquet	2023-12-30 00:00:00	1728567
+
+96	https://nytimes.com?q=test	10	primis in faucibus	2023-04-13 00:00:00	2429511
+
+97	http://wikipedia.org?p=8	38	vitae risus. Duis a mi fringilla mi lacinia	2022-09-21 00:00:00	1513395
+
+98	https://google.com?ab=441&aad=2	26	facilisi. Sed neque. Sed eget lacus.	2022-07-09 00:00:00	2033783
+
+99	https://reddit.com?ab=441&aad=2	78	vestibulum lorem, sit amet ultricies sem	2023-10-01 00:00:00	1867285
+
+100	http://twitter.com?p=8	53	pharetra, felis eget varius	2022-11-27 00:00:00	140560
+
+\.
+
+
+
+
+
+--
+
+-- Data for Name: subscription_type; Type: TABLE DATA; Schema: public; Owner: gb_user
+
+--
+
+
+
+COPY public.subscription_type (id, name) FROM stdin;
+
+2	user
+
+1	community\n
+
+\.
+
+
+
+
+
+--
+
+-- Data for Name: subscriptions; Type: TABLE DATA; Schema: public; Owner: gb_user
+
+--
+
+
+
+COPY public.subscriptions (id, subscriber_id, subscription_id, subscription_type, subscription_status, created_at) FROM stdin;
+
+1	6	63	2	true	2022-09-24 08:38:56
+
+2	51	9	2	false	2023-05-30 02:58:40
+
+3	5	56	2	false	2022-06-03 11:30:22
+
+4	14	84	2	false	2022-10-30 15:55:55
+
+5	84	35	2	true	2023-05-03 05:56:51
+
+6	70	37	1	false	2023-09-10 00:06:26
+
+7	4	60	1	true	2022-08-26 12:55:30
+
+8	38	81	1	true	2022-08-02 14:29:08
+
+9	100	38	1	true	2023-05-31 01:17:10
+
+10	64	53	1	false	2023-10-03 20:08:01
+
+11	100	60	1	false	2023-04-12 06:09:28
+
+12	85	15	2	false	2023-11-07 07:23:32
+
+13	70	5	1	true	2023-10-13 10:57:07
+
+14	20	4	1	true	2023-02-11 03:36:32
+
+15	19	4	2	false	2024-02-23 12:12:13
+
+16	43	25	2	true	2022-06-10 20:31:29
+
+17	100	29	1	true	2024-03-15 19:37:32
+
+18	23	93	2	true	2024-03-16 04:31:59
+
+19	49	82	1	false	2024-02-23 04:31:01
+
+20	27	50	2	true	2023-09-26 02:26:12
+
+21	61	18	1	true	2022-12-15 08:56:18
+
+22	52	90	1	true	2024-01-03 00:45:46
+
+23	37	10	1	false	2023-04-18 08:01:13
+
+24	14	63	2	false	2023-07-15 11:19:33
+
+25	15	9	1	false	2022-10-26 07:07:19
+
+26	25	51	1	false	2023-09-09 11:18:36
+
+27	51	39	2	false	2023-02-14 07:42:35
+
+28	58	73	1	true	2022-09-21 06:18:30
+
+29	31	38	1	true	2022-10-11 20:39:49
+
+30	81	36	2	true	2023-04-24 14:21:14
+
+31	21	32	1	false	2022-11-04 00:36:03
+
+32	52	55	2	false	2023-10-13 21:44:17
+
+33	63	52	1	true	2023-09-25 01:15:19
+
+34	67	60	2	true	2023-07-21 18:03:20
+
+35	83	36	1	true	2023-10-02 16:27:33
+
+36	78	24	2	true	2022-05-22 03:40:54
+
+37	40	24	1	false	2023-02-17 01:24:20
+
+38	79	47	2	false	2023-08-10 00:03:37
+
+39	80	96	1	true	2023-11-03 22:40:57
+
+40	42	30	2	true	2022-06-27 03:37:19
+
+41	31	2	2	false	2023-01-14 20:18:18
+
+42	27	22	1	true	2023-01-11 19:42:47
+
+43	7	63	1	false	2022-11-16 23:07:02
+
+44	96	40	2	true	2024-03-23 01:44:14
+
+45	51	52	1	false	2022-05-25 05:22:33
+
+46	12	28	1	true	2023-03-04 12:49:20
+
+47	96	76	2	true	2023-06-18 01:41:59
+
+48	34	47	2	true	2022-11-03 04:27:35
+
+49	51	69	1	false	2024-03-23 19:03:01
+
+50	10	45	2	false	2023-09-10 16:55:17
+
+51	43	50	2	true	2023-07-25 06:46:45
+
+52	42	4	2	true	2022-05-27 07:30:57
+
+53	4	95	2	true	2024-01-31 09:45:32
+
+54	28	97	1	false	2022-07-04 04:11:56
+
+55	26	58	2	false	2022-08-25 15:13:26
+
+56	24	12	1	true	2022-09-12 19:56:30
+
+57	40	20	2	true	2023-06-11 21:25:59
+
+58	9	12	2	false	2022-05-05 15:19:01
+
+59	8	49	1	false	2022-07-27 09:33:01
+
+60	34	85	2	false	2022-11-16 00:45:36
+
+61	20	53	2	true	2022-07-22 14:40:13
+
+62	59	40	2	false	2024-02-23 20:24:32
+
+63	41	9	1	false	2023-03-24 07:56:33
+
+64	19	48	1	true	2023-01-23 04:16:54
+
+65	96	19	2	false	2023-09-17 21:53:45
+
+66	39	70	1	false	2023-06-26 12:52:18
+
+67	34	63	1	false	2024-02-27 19:11:16
+
+68	7	24	2	false	2022-05-01 23:22:00
+
+69	88	28	1	false	2023-06-16 15:42:56
+
+70	100	44	1	false	2022-12-22 05:48:58
+
+71	42	15	1	true	2023-02-16 13:13:22
+
+72	46	75	2	false	2022-12-07 18:27:19
+
+73	33	48	1	true	2023-06-24 04:27:50
+
+74	2	76	2	false	2022-06-15 18:49:41
+
+75	26	6	2	false	2022-12-30 14:37:59
+
+76	22	45	2	true	2023-04-26 09:12:34
+
+77	68	27	2	false	2024-01-14 06:33:39
+
+78	83	49	1	true	2022-08-03 23:41:39
+
+79	3	84	2	false	2023-02-13 01:08:24
+
+80	48	75	2	true	2024-02-21 17:05:54
+
+81	83	50	2	true	2023-07-07 22:04:59
+
+82	10	8	2	true	2023-09-28 00:47:43
+
+83	92	86	2	true	2023-10-02 16:40:14
+
+84	47	12	2	false	2022-12-21 17:30:48
+
+85	27	4	1	true	2022-11-20 18:32:59
+
+86	28	6	1	true	2023-10-27 06:28:46
+
+87	100	84	2	true	2023-11-17 06:36:13
+
+88	69	17	1	true	2022-08-22 13:48:28
+
+89	78	91	1	true	2023-11-26 21:06:43
+
+90	44	31	1	false	2023-03-09 11:27:34
+
+91	82	60	2	true	2023-03-25 12:14:36
+
+92	13	47	1	false	2024-01-14 08:59:41
+
+93	100	92	2	true	2023-10-03 04:39:12
+
+94	61	61	1	false	2022-11-04 13:17:23
+
+95	13	92	1	true	2022-05-05 08:33:45
+
+96	97	33	1	false	2022-05-19 12:38:04
+
+97	33	94	2	false	2024-03-16 02:06:09
+
+98	11	36	1	false	2023-12-04 13:39:51
+
+99	70	73	2	false	2023-10-09 09:23:20
+
+100	85	10	1	true	2023-11-30 23:48:55
+
+\.
+
+
+
+
+
+--
+
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: gb_user
+
+--
+
+
+
+COPY public.users (id, first_name, last_name, email, phone, main_photo_id, created_at) FROM stdin;
+
+1	Nevada	Fox	nullam@yahoo.net	(07563) 5744012	88	2023-08-06 18:26:54
+
+2	Herrod	Alston	arcu@yahoo.edu	(0496) 24876351	68	2023-04-07 14:33:19
+
+3	Stacy	Christian	nam.ac@icloud.ca	(014) 75769946	15	2023-01-20 01:25:17
+
+4	Gray	O'brien	a.felis@aol.edu	(02263) 6440095	98	2022-08-17 17:40:42
+
+5	Forrest	Blackburn	quisque.tincidunt@outlook.org	(01241) 3135511	10	2024-02-10 00:00:32
+
+6	Juliet	Paul	cursus.et@protonmail.com	(037144) 538947	83	2022-06-13 11:05:46
+
+7	Gemma	Burch	euismod.ac.fermentum@protonmail.org	(034333) 288679	46	2023-04-15 18:30:24
+
+8	Joshua	Barrera	eget.magna@yahoo.com	(04458) 6229674	74	2023-11-11 03:27:46
+
+9	Davis	Cameron	est.congue.a@protonmail.com	(02324) 0526686	20	2022-11-20 14:30:13
+
+10	Zelenia	Johns	et.malesuada@outlook.org	(07773) 9550869	49	2023-12-01 16:26:13
+
+11	Althea	Sharp	integer.urna.vivamus@icloud.edu	(034461) 147333	19	2024-01-05 02:30:11
+
+12	Hiroko	Parker	aenean.massa@aol.ca	(0789) 43717211	9	2023-07-14 10:54:30
+
+13	Kerry	Pena	mauris@yahoo.couk	(02612) 6169254	58	2023-04-28 14:44:43
+
+14	Hiroko	Wooten	sit.amet@yahoo.net	(06284) 5443417	13	2022-11-27 04:46:48
+
+15	Brock	Knowles	volutpat.ornare@outlook.net	(0635) 43337928	41	2024-02-06 16:21:24
+
+16	Iola	Mcintyre	nonummy.ac@aol.edu	(0274) 52044377	84	2022-07-15 05:26:49
+
+17	Octavius	Bond	pellentesque.tincidunt@yahoo.net	(079) 46713534	89	2022-05-05 06:05:32
+
+18	Velma	Waters	maecenas.iaculis@icloud.com	(02648) 4756338	98	2023-04-08 15:26:23
+
+19	Molly	Terry	vel.nisl@google.net	(0531) 19645281	59	2022-04-14 15:58:02
+
+20	Malik	Bowman	cum.sociis@outlook.com	(0860) 37645879	25	2022-12-18 22:43:11
+
+21	Grady	Chan	vitae.erat@outlook.edu	(037637) 328913	27	2023-11-04 10:41:18
+
+22	Rafael	Horne	dapibus.ligula@outlook.org	(021) 63250147	88	2023-09-16 00:16:03
+
+23	Jeremy	Jacobson	natoque.penatibus@outlook.org	(032862) 384188	17	2022-06-20 18:03:07
+
+24	Timon	Woodward	quis.urna@google.couk	(03055) 7840859	66	2023-09-20 15:05:12
+
+25	Upton	Hinton	aliquam.enim@protonmail.ca	(0480) 61154470	19	2022-11-27 16:33:44
+
+26	Berk	Lester	lectus.quis.massa@google.com	(0076) 64443600	31	2023-04-07 21:57:44
+
+27	Yael	Ortiz	convallis.ligula.donec@outlook.couk	(0177) 10534328	51	2024-02-05 21:11:10
+
+28	Levi	O'connor	lorem.auctor@yahoo.couk	(0982) 56556594	42	2023-05-02 19:34:37
+
+29	Nasim	Compton	vestibulum.neque.sed@outlook.net	(09466) 5832802	68	2022-12-24 04:33:58
+
+30	Nola	Santos	amet.diam@outlook.net	(093) 63508361	59	2023-09-09 20:33:07
+
+31	Derek	Juarez	sed@aol.couk	(0686) 58750733	82	2024-03-03 15:11:26
+
+32	Flavia	Rowland	risus.a@aol.edu	(035468) 268842	86	2022-05-26 03:56:13
+
+33	Rajah	Garrett	velit.dui.semper@google.couk	(031571) 312537	10	2022-10-23 00:50:36
+
+34	Audra	Wilder	habitant.morbi@google.net	(04647) 9101973	16	2022-05-20 03:29:15
+
+35	Lee	Rosa	lacinia@hotmail.net	(078) 35867823	84	2023-02-14 08:05:37
+
+36	Rashad	Trujillo	nulla.in@protonmail.edu	(0799) 69614266	82	2023-08-17 15:10:18
+
+37	Connor	Huber	sit.amet.consectetuer@aol.edu	(038156) 171426	53	2023-03-31 06:47:27
+
+38	Rowan	Ayala	lorem@icloud.com	(030635) 963266	66	2022-10-04 16:18:05
+
+39	Aaron	Cabrera	non.enim@protonmail.com	(0183) 74917014	70	2023-04-17 00:57:59
+
+40	Penelope	Camacho	praesent.interdum@outlook.com	(0828) 01815676	68	2023-02-25 12:37:10
+
+41	Xantha	Hutchinson	eu.elit.nulla@yahoo.edu	(035769) 649233	93	2022-06-17 13:49:01
+
+42	Blake	Gay	semper.dui@protonmail.edu	(04532) 1625354	5	2022-11-24 21:41:01
+
+43	Jolene	Thomas	auctor@yahoo.net	(038442) 593666	12	2023-03-12 21:27:01
+
+44	Ashton	Fulton	vitae.purus@yahoo.edu	(0375) 01814004	78	2022-08-05 13:26:52
+
+45	Jonas	Sims	gravida.aliquam@icloud.couk	(0032) 88653322	21	2022-07-10 14:05:07
+
+46	Virginia	Fletcher	donec@hotmail.ca	(08456) 3948758	75	2022-08-10 01:52:21
+
+47	Suki	Joyner	rutrum.magna@icloud.ca	(053) 08350436	68	2022-10-27 17:31:03
+
+48	Guy	English	amet.massa@yahoo.ca	(05018) 4245456	19	2024-02-16 01:34:22
+
+49	Cade	Goff	tincidunt.dui@protonmail.org	(033628) 716115	52	2022-10-22 14:54:57
+
+50	Aaron	Hansen	magnis.dis@outlook.net	(04131) 3822588	23	2022-07-17 15:21:37
+
+51	Jackson	Bryan	nullam.lobortis@google.edu	(047) 44404545	16	2023-10-21 23:54:47
+
+52	Macy	Walter	sit.amet@protonmail.net	(0657) 25721577	31	2023-12-07 01:32:43
+
+53	Brandon	Tran	accumsan.convallis.ante@outlook.com	(039628) 918813	53	2022-11-13 07:29:51
+
+54	Imani	Hinton	non.hendrerit@hotmail.org	(0346) 54610598	24	2023-05-30 15:06:22
+
+55	Nero	Blake	ac@yahoo.com	(038186) 585554	46	2023-04-17 17:31:08
+
+56	Merritt	Parks	arcu.aliquam.ultrices@outlook.edu	(0831) 23341487	92	2023-10-16 11:46:20
+
+57	Emerson	Henderson	pretium@google.net	(038) 21572238	21	2022-07-30 11:19:26
+
+58	Myles	Vaughan	commodo@protonmail.net	(0215) 25123943	7	2024-02-14 13:01:28
+
+59	Kirsten	Carrillo	etiam.vestibulum.massa@outlook.ca	(0394) 92408133	80	2022-09-21 19:02:12
+
+60	Rudyard	Steele	interdum.nunc.sollicitudin@icloud.ca	(0521) 43129387	33	2023-03-12 19:31:08
+
+61	Acton	Vazquez	aliquet@aol.couk	(01716) 6368339	81	2023-04-11 05:00:00
+
+62	Caleb	Caldwell	eu.metus@google.com	(038127) 191956	39	2023-02-18 16:25:57
+
+63	Mariko	Dejesus	metus.in@icloud.edu	(038273) 083163	41	2022-08-06 10:43:19
+
+64	Howard	Pollard	arcu.nunc@yahoo.org	(0897) 71807313	50	2022-05-15 14:01:39
+
+65	Rylee	Floyd	est.vitae@yahoo.ca	(013) 25107641	29	2023-03-03 11:54:32
+
+66	Ethan	O'donnell	dis.parturient@aol.net	(0565) 28230358	62	2024-01-27 15:45:40
+
+67	Burton	Hodge	justo.praesent.luctus@yahoo.com	(041) 51396588	16	2022-12-24 13:41:24
+
+68	Debra	Bennett	donec.nibh@aol.org	(050) 62605274	75	2022-11-04 09:10:47
+
+69	Portia	Velazquez	adipiscing.fringilla@google.com	(032434) 142624	23	2024-01-27 05:53:14
+
+70	Zelenia	Mcgee	in.felis@protonmail.org	(08047) 6364655	17	2024-02-08 14:42:17
+
+71	Dean	Pearson	dolor.dolor@hotmail.net	(032410) 804687	66	2022-11-09 06:34:16
+
+72	Celeste	Singleton	consequat.enim@protonmail.couk	(03865) 1785106	12	2023-10-01 14:18:49
+
+73	Rafael	Campos	id.risus@protonmail.couk	(034685) 947823	73	2022-12-30 05:22:19
+
+74	Baxter	Alvarez	lobortis.risus.in@protonmail.ca	(015) 54330127	96	2023-11-25 10:57:11
+
+75	Graiden	Cummings	est.nunc@outlook.org	(038144) 964327	35	2022-05-20 10:07:20
+
+76	Anastasia	Lynch	a@aol.org	(045) 47672787	45	2024-01-01 15:24:47
+
+77	Hyacinth	Mccullough	sed@yahoo.couk	(093) 24437373	20	2023-03-17 22:35:16
+
+78	Sarah	Hamilton	tempus.non@icloud.couk	(034668) 474271	95	2024-01-26 21:20:03
+
+79	George	Hudson	senectus.et.netus@protonmail.edu	(038622) 727182	57	2022-08-25 10:17:47
+
+80	Sopoline	Gallegos	habitant@aol.com	(0875) 59582894	23	2022-12-29 12:29:01
+
+81	Diana	Dudley	ullamcorper.velit.in@hotmail.com	(0943) 65429858	78	2023-03-15 14:05:06
+
+82	David	Savage	semper.tellus@yahoo.edu	(0325) 12015111	34	2022-06-11 12:50:51
+
+83	Kuame	Tanner	duis.cursus.diam@hotmail.net	(068) 12494274	77	2023-02-05 07:09:29
+
+84	Uta	Witt	venenatis.vel@protonmail.edu	(056) 33587172	56	2023-11-11 13:01:24
+
+85	Orlando	Duncan	vitae@icloud.ca	(05547) 9616556	22	2023-06-05 00:16:11
+
+86	Hamilton	Goff	semper@hotmail.ca	(033179) 562643	47	2023-08-19 14:30:39
+
+87	Cailin	Curtis	mauris.morbi@outlook.ca	(044) 71341139	25	2023-05-15 10:22:50
+
+88	Maia	Mullen	nam.porttitor@google.couk	(032207) 921843	86	2024-04-13 22:00:32
+
+89	Wesley	Morrow	arcu.vel@hotmail.net	(0767) 78298882	88	2023-12-21 00:00:15
+
+90	Trevor	Fisher	sagittis@outlook.couk	(035990) 427893	63	2022-04-21 20:08:22
+
+91	Miranda	Noble	integer.vulputate@hotmail.org	(0369) 33322455	70	2023-04-30 15:53:47
+
+92	Aquila	Moss	donec.vitae@aol.edu	(039783) 451100	88	2024-04-13 01:36:01
+
+93	Zephania	Sanchez	laoreet.ipsum.curabitur@outlook.ca	(01482) 7355657	4	2023-04-08 02:17:25
+
+94	Phelan	Rogers	fermentum.risus.at@aol.couk	(036054) 396664	62	2023-10-16 10:13:16
+
+95	Jamal	Espinoza	sit.amet@protonmail.org	(0852) 93723717	67	2024-01-11 09:31:33
+
+96	Dane	Oneal	ac.turpis.egestas@aol.edu	(0560) 50371577	99	2022-09-01 02:24:18
+
+97	Latifah	Branch	felis.eget.varius@hotmail.com	(032268) 148613	79	2022-05-14 08:05:25
+
+98	Merritt	Mccullough	sit.amet@outlook.org	(07073) 4581151	57	2024-04-04 01:57:44
+
+99	Hop	Gardner	ac@icloud.org	(039530) 581736	78	2024-01-27 01:57:43
+
+100	Geoffrey	Rodriguez	et.magnis@protonmail.com	(037882) 412755	76	2023-12-29 02:08:07
+
+\.
+
+
+
+
+
+--
+
+-- Data for Name: video; Type: TABLE DATA; Schema: public; Owner: gb_user
+
+--
+
+
+
+COPY public.video (id, url, owner_id, description, uploaded_at, size) FROM stdin;
+
+1	https://cnn.com?k=0	79	purus ac tellus. Suspendisse	2023-10-19 00:00:00	1263992
+
+2	https://nytimes.com?page=1&offset=1	86	ut mi. Duis risus odio,	2022-07-05 00:00:00	1944289
+
+3	https://reddit.com?q=test	36	orci lacus vestibulum lorem, sit amet ultricies sem magna nec	2023-06-25 00:00:00	93154
+
+4	https://bbc.co.uk?page=1&offset=1	37	mollis lectus pede et	2023-01-20 00:00:00	1602839
+
+5	http://zoom.us?ad=115	71	mauris sapien, cursus in, hendrerit consectetuer, cursus	2024-02-20 00:00:00	2988225
+
+6	https://reddit.com?gi=100	12	justo faucibus lectus, a sollicitudin	2024-01-25 00:00:00	2534271
+
+7	http://pinterest.com?q=0	14	nonummy. Fusce fermentum fermentum arcu. Vestibulum ante ipsum primis	2022-07-16 00:00:00	172258
+
+8	http://baidu.com?ab=441&aad=2	55	tellus eu augue porttitor interdum. Sed auctor odio a	2024-02-28 00:00:00	730973
+
+9	https://google.com?search=1	43	Aliquam adipiscing lobortis risus.	2024-01-03 00:00:00	69126
+
+10	http://whatsapp.com?page=1&offset=1	34	ac libero	2023-10-22 00:00:00	91253
+
+11	https://pinterest.com?gi=100	7	Proin nisl sem, consequat nec, mollis vitae, posuere at,	2022-11-22 00:00:00	731968
+
+12	https://nytimes.com?page=1&offset=1	30	orci. Ut sagittis lobortis mauris. Suspendisse aliquet	2023-10-03 00:00:00	1516537
+
+13	https://naver.com?gi=100	78	sapien molestie orci tincidunt adipiscing. Mauris molestie pharetra	2023-04-07 00:00:00	2289313
+
+14	https://guardian.co.uk?search=1&q=de	4	tincidunt nibh. Phasellus	2023-06-29 00:00:00	1233286
+
+15	https://baidu.com?k=0	23	Nullam feugiat placerat velit. Quisque	2022-11-13 00:00:00	2033483
+
+16	http://google.com?gi=100	12	enim.	2022-06-16 00:00:00	1857419
+
+17	https://twitter.com?q=11	36	ac nulla. In tincidunt congue	2024-02-16 00:00:00	2734308
+
+18	http://walmart.com?client=g	83	penatibus et magnis dis parturient montes, nascetur	2022-10-04 00:00:00	1963302
+
+19	http://ebay.com?q=11	98	laoreet posuere, enim	2023-09-25 00:00:00	1573349
+
+20	http://pinterest.com?ab=441&aad=2	95	faucibus orci luctus et ultrices posuere cubilia Curae Donec	2022-09-08 00:00:00	2209136
+
+21	https://walmart.com?ad=115	63	fermentum	2024-04-07 00:00:00	2557644
+
+22	https://baidu.com?search=1&q=de	65	Nam consequat dolor vitae dolor. Donec fringilla. Donec feugiat	2023-09-11 00:00:00	99485
+
+23	https://yahoo.com?page=1&offset=1	96	Maecenas mi felis, adipiscing fringilla, porttitor	2023-05-17 00:00:00	2202885
+
+24	https://ebay.com?search=1	41	mi enim, condimentum eget,	2023-04-16 00:00:00	360018
+
+25	http://nytimes.com?str=se	38	rhoncus id, mollis nec, cursus	2022-06-03 00:00:00	1038293
+
+26	http://google.com?client=g	46	felis, adipiscing fringilla, porttitor vulputate, posuere vulputate, lacus.	2022-11-14 00:00:00	155242
+
+27	https://yahoo.com?k=0	18	arcu. Nunc mauris. Morbi non sapien molestie orci tincidunt adipiscing.	2023-12-21 00:00:00	2927227
+
+28	http://facebook.com?page=1&offset=1	15	sed dictum eleifend, nunc risus	2023-07-02 00:00:00	56848
+
+29	http://twitter.com?q=0	67	lobortis tellus justo sit amet nulla. Donec non justo. Proin	2023-10-04 00:00:00	2018187
+
+30	https://reddit.com?q=test	36	sem semper erat,	2023-01-08 00:00:00	1917691
+
+31	http://netflix.com?page=1&offset=1	5	Donec	2023-11-08 00:00:00	2711213
+
+32	https://netflix.com?page=1&offset=1	82	gravida sagittis. Duis gravida. Praesent eu nulla at	2023-06-06 00:00:00	2373271
+
+33	https://naver.com?ab=441&aad=2	56	odio sagittis	2022-05-24 00:00:00	2673692
+
+34	https://ebay.com?q=11	1	nec, imperdiet nec,	2023-10-02 00:00:00	66352
+
+35	http://twitter.com?ab=441&aad=2	78	ornare, lectus ante dictum mi, ac	2023-07-25 00:00:00	354120
+
+36	http://bbc.co.uk?ad=115	16	lacus vestibulum lorem, sit amet ultricies sem	2022-08-21 00:00:00	1009610
+
+37	http://bbc.co.uk?client=g	86	In tincidunt congue turpis. In condimentum. Donec at arcu.	2023-02-10 00:00:00	2171035
+
+38	http://zoom.us?str=se	19	Fusce dolor quam, elementum	2023-12-16 00:00:00	2682788
+
+39	http://walmart.com?client=g	82	sit amet ornare	2023-01-13 00:00:00	436459
+
+40	http://facebook.com?q=0	37	nulla at sem molestie sodales. Mauris	2023-11-27 00:00:00	1920173
+
+41	http://nytimes.com?page=1&offset=1	2	eu, accumsan sed, facilisis vitae, orci. Phasellus dapibus quam quis	2022-08-25 00:00:00	1389667
+
+42	http://cnn.com?ab=441&aad=2	33	imperdiet, erat nonummy	2023-03-25 00:00:00	438301
+
+43	https://instagram.com?p=8	51	luctus et ultrices posuere cubilia Curae Donec tincidunt.	2022-08-24 00:00:00	1471833
+
+44	https://guardian.co.uk?search=1&q=de	49	blandit mattis. Cras eget nisi dictum augue malesuada	2023-02-14 00:00:00	2839528
+
+45	https://instagram.com?q=test	49	Mauris eu turpis. Nulla aliquet. Proin velit.	2022-12-15 00:00:00	2262565
+
+46	http://twitter.com?search=1	42	mi lorem, vehicula et, rutrum eu, ultrices sit	2022-06-15 00:00:00	696461
+
+47	https://bbc.co.uk?ab=441&aad=2	97	pede ac	2023-05-09 00:00:00	2458031
+
+48	https://google.com?q=11	47	diam lorem, auctor quis, tristique ac, eleifend vitae, erat. Vivamus	2024-03-03 00:00:00	1057062
+
+49	https://pinterest.com?k=0	71	feugiat non, lobortis quis, pede.	2023-12-02 00:00:00	2501846
+
+50	https://youtube.com?str=se	37	dui. Cras pellentesque. Sed dictum. Proin eget	2024-03-14 00:00:00	2947156
+
+51	https://yahoo.com?q=11	58	penatibus et magnis dis	2023-04-17 00:00:00	1680166
+
+52	http://youtube.com?q=4	66	scelerisque mollis. Phasellus libero mauris, aliquam	2023-11-17 00:00:00	327678
+
+53	https://naver.com?q=0	54	facilisis eget, ipsum.	2022-05-15 00:00:00	597087
+
+54	https://ebay.com?q=11	83	sed consequat auctor, nunc nulla vulputate dui, nec tempus	2024-04-06 00:00:00	2694437
+
+55	https://cnn.com?g=1	78	luctus lobortis. Class aptent taciti sociosqu	2023-04-23 00:00:00	859798
+
+56	http://walmart.com?search=1	30	ante lectus convallis est, vitae	2023-08-28 00:00:00	1281797
+
+57	https://cnn.com?search=1	52	nisi. Cum sociis	2022-07-18 00:00:00	1321613
+
+58	https://facebook.com?gi=100	40	ultrices iaculis odio. Nam interdum enim non nisi.	2023-07-03 00:00:00	1646646
+
+59	https://baidu.com?search=1	91	amet metus. Aliquam	2023-10-06 00:00:00	2796641
+
+60	https://reddit.com?q=4	53	sem,	2023-08-09 00:00:00	520078
+
+61	https://guardian.co.uk?q=0	4	risus. In mi pede, nonummy	2022-10-02 00:00:00	825238
+
+62	http://cnn.com?page=1&offset=1	7	Aliquam ornare, libero at auctor ullamcorper,	2023-08-04 00:00:00	1342003
+
+63	http://nytimes.com?client=g	28	ornare, facilisis eget, ipsum. Donec sollicitudin	2023-10-27 00:00:00	1000673
+
+64	https://yahoo.com?ad=115	0	hendrerit	2023-04-25 00:00:00	465357
+
+65	https://cnn.com?q=11	87	quam a felis ullamcorper viverra. Maecenas iaculis aliquet	2023-02-26 00:00:00	2745934
+
+66	http://twitter.com?ad=115	88	mauris. Morbi non sapien molestie orci	2023-03-26 00:00:00	1742756
+
+67	http://instagram.com?k=0	84	id magna et ipsum cursus vestibulum.	2023-08-20 00:00:00	2556296
+
+68	http://baidu.com?g=1	41	neque non quam. Pellentesque habitant morbi	2022-05-09 00:00:00	60553
+
+69	http://walmart.com?q=test	1	malesuada ut, sem. Nulla interdum. Curabitur	2023-02-10 00:00:00	978700
+
+70	http://nytimes.com?client=g	64	nonummy. Fusce fermentum fermentum arcu. Vestibulum ante ipsum	2022-08-15 00:00:00	1811829
+
+71	https://youtube.com?q=4	35	libero est, congue a, aliquet vel,	2023-03-31 00:00:00	75196
+
+72	https://zoom.us?gi=100	59	dignissim tempor arcu. Vestibulum ut	2022-04-16 00:00:00	324325
+
+73	http://youtube.com?q=4	55	habitant morbi tristique senectus et	2023-05-22 00:00:00	2117933
+
+74	http://youtube.com?q=11	48	Nunc laoreet lectus quis massa. Mauris vestibulum, neque sed dictum	2022-11-28 00:00:00	873621
+
+75	http://reddit.com?q=11	57	nec	2022-09-17 00:00:00	1738035
+
+76	https://cnn.com?q=11	85	ac ipsum.	2023-08-02 00:00:00	808179
+
+77	https://facebook.com?p=8	1	mi tempor lorem, eget	2023-11-17 00:00:00	2608675
+
+78	https://instagram.com?gi=100	88	non dui nec urna	2022-07-16 00:00:00	2637218
+
+79	http://twitter.com?str=se	72	sit amet, consectetuer	2022-08-17 00:00:00	803455
+
+80	https://zoom.us?q=4	76	sapien, gravida non, sollicitudin a, malesuada id, erat. Etiam	2023-02-09 00:00:00	565477
+
+81	http://ebay.com?search=1&q=de	22	magna a tortor. Nunc commodo auctor	2023-07-13 00:00:00	600890
+
+82	https://whatsapp.com?gi=100	5	sociis natoque penatibus et magnis dis parturient	2024-03-26 00:00:00	1567284
+
+83	https://bbc.co.uk?gi=100	51	cursus non, egestas a, dui. Cras	2023-07-08 00:00:00	1019437
+
+84	http://instagram.com?search=1	81	cursus et, eros. Proin ultrices. Duis volutpat nunc sit	2022-08-22 00:00:00	2013668
+
+85	https://twitter.com?q=11	80	augue porttitor interdum. Sed auctor odio a purus. Duis elementum,	2023-09-16 00:00:00	1913329
+
+86	https://whatsapp.com?k=0	66	lectus, a sollicitudin	2023-06-22 00:00:00	1389569
+
+87	http://bbc.co.uk?search=1	65	risus quis diam luctus	2023-03-05 00:00:00	1786214
+
+88	http://wikipedia.org?ad=115	63	dolor. Fusce feugiat. Lorem ipsum dolor sit amet, consectetuer	2023-11-15 00:00:00	1827003
+
+89	http://whatsapp.com?str=se	29	ut, sem. Nulla interdum. Curabitur dictum. Phasellus in	2023-01-18 00:00:00	1048171
+
+90	http://wikipedia.org?client=g	81	in faucibus orci luctus et ultrices posuere cubilia	2023-07-19 00:00:00	1974901
+
+91	http://twitter.com?q=test	36	et magnis dis	2023-04-23 00:00:00	2046514
+
+92	http://twitter.com?q=0	48	Integer vitae nibh. Donec est mauris, rhoncus id, mollis	2023-03-02 00:00:00	2993583
+
+93	http://ebay.com?q=test	25	lacinia mattis. Integer eu lacus.	2023-06-20 00:00:00	1955488
+
+94	http://reddit.com?ad=115	67	nonummy ac, feugiat	2023-05-23 00:00:00	738690
+
+95	https://instagram.com?q=11	72	Donec consectetuer mauris id	2024-01-21 00:00:00	2981131
+
+96	http://netflix.com?ad=115	98	sagittis. Nullam vitae diam.	2022-05-05 00:00:00	13889
+
+97	http://zoom.us?q=4	6	eget	2022-08-06 00:00:00	42614
+
+98	https://walmart.com?page=1&offset=1	23	lorem. Donec elementum, lorem ut aliquam iaculis, lacus pede sagittis	2023-11-08 00:00:00	2131923
+
+99	http://twitter.com?g=1	4	convallis	2022-07-16 00:00:00	1150266
+
+100	https://zoom.us?p=8	71	ac libero nec ligula consectetuer	2022-05-29 00:00:00	1411373
+
+\.
+
+
+
+
+
+--
+
+-- Name: communities_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gb_user
+
+--
+
+
+
+SELECT pg_catalog.setval('public.communities_id_seq', 100, true);
+
+
+
+
+
+--
+
+-- Name: friendship_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gb_user
+
+--
+
+
+
+SELECT pg_catalog.setval('public.friendship_id_seq', 100, true);
+
+
+
+
+
+--
+
+-- Name: friendship_statuses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gb_user
+
+--
+
+
+
+SELECT pg_catalog.setval('public.friendship_statuses_id_seq', 2, true);
+
+
+
+
+
+--
+
+-- Name: messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gb_user
+
+--
+
+
+
+SELECT pg_catalog.setval('public.messages_id_seq', 100, true);
+
+
+
+
+
+--
+
+-- Name: photo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gb_user
+
+--
+
+
+
+SELECT pg_catalog.setval('public.photo_id_seq', 100, true);
+
+
+
+
+
+--
+
+-- Name: subscription_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gb_user
+
+--
+
+
+
+SELECT pg_catalog.setval('public.subscription_type_id_seq', 1, false);
+
+
+
+
+
+--
+
+-- Name: subscriptions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gb_user
+
+--
+
+
+
+SELECT pg_catalog.setval('public.subscriptions_id_seq', 100, true);
+
+
+
+
+
+--
+
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gb_user
+
+--
+
+
+
+SELECT pg_catalog.setval('public.users_id_seq', 100, true);
+
+
+
+
+
+--
+
+-- Name: video_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gb_user
+
+--
+
+
+
+SELECT pg_catalog.setval('public.video_id_seq', 100, true);
+
+
+
+
+
+--
+
+-- Name: communities communities_name_key; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.communities
+
+    ADD CONSTRAINT communities_name_key UNIQUE (name);
+
+
+
+
+
+--
+
+-- Name: communities communities_pkey; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.communities
+
+    ADD CONSTRAINT communities_pkey PRIMARY KEY (id);
+
+
+
+
+
+--
+
+-- Name: friendship friendship_pkey; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.friendship
+
+    ADD CONSTRAINT friendship_pkey PRIMARY KEY (id);
+
+
+
+
+
+--
+
+-- Name: friendship_statuses friendship_statuses_name_key; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.friendship_statuses
+
+    ADD CONSTRAINT friendship_statuses_name_key UNIQUE (name);
+
+
+
+
+
+--
+
+-- Name: friendship_statuses friendship_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.friendship_statuses
+
+    ADD CONSTRAINT friendship_statuses_pkey PRIMARY KEY (id);
+
+
+
+
+
+--
+
+-- Name: messages messages_pkey; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.messages
+
+    ADD CONSTRAINT messages_pkey PRIMARY KEY (id);
+
+
+
+
+
+--
+
+-- Name: photo photo_pkey; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.photo
+
+    ADD CONSTRAINT photo_pkey PRIMARY KEY (id);
+
+
+
+
+
+--
+
+-- Name: subscription_type subscription_type_name_key; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.subscription_type
+
+    ADD CONSTRAINT subscription_type_name_key UNIQUE (name);
+
+
+
+
+
+--
+
+-- Name: subscription_type subscription_type_pkey; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.subscription_type
+
+    ADD CONSTRAINT subscription_type_pkey PRIMARY KEY (id);
+
+
+
+
+
+--
+
+-- Name: subscriptions subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.subscriptions
+
+    ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
+
+
+
+
+
+--
+
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.users
+
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+
+
+
+--
+
+-- Name: users users_phone_key; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.users
+
+    ADD CONSTRAINT users_phone_key UNIQUE (phone);
+
+
+
+
+
+--
+
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.users
+
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+
+
+
+--
+
+-- Name: video video_pkey; Type: CONSTRAINT; Schema: public; Owner: gb_user
+
+--
+
+
+
+ALTER TABLE ONLY public.video
+
+    ADD CONSTRAINT video_pkey PRIMARY KEY (id);
+
+
+
+
+
+--
+
+-- PostgreSQL database dump complete
+
+--
+
+
+

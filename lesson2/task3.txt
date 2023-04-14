@@ -1,0 +1,397 @@
+postgres@al-VirtualBox:~$ createdb vk_staging
+
+postgres@al-VirtualBox:~$ psql vk_staging < vk.dump.sql
+
+SET
+
+SET
+
+SET
+
+SET
+
+SET
+
+ set_config 
+
+------------
+
+ 
+
+(1 row)
+
+
+
+SET
+
+SET
+
+SET
+
+SET
+
+SET
+
+SET
+
+CREATE TABLE
+
+ALTER TABLE
+
+CREATE SEQUENCE
+
+ALTER TABLE
+
+ALTER SEQUENCE
+
+CREATE TABLE
+
+ALTER TABLE
+
+CREATE TABLE
+
+ALTER TABLE
+
+CREATE SEQUENCE
+
+ALTER TABLE
+
+ALTER SEQUENCE
+
+CREATE TABLE
+
+ALTER TABLE
+
+CREATE SEQUENCE
+
+ALTER TABLE
+
+ALTER SEQUENCE
+
+CREATE TABLE
+
+ALTER TABLE
+
+CREATE SEQUENCE
+
+ALTER TABLE
+
+ALTER SEQUENCE
+
+CREATE TABLE
+
+ALTER TABLE
+
+CREATE SEQUENCE
+
+ALTER TABLE
+
+ALTER SEQUENCE
+
+CREATE TABLE
+
+ALTER TABLE
+
+CREATE SEQUENCE
+
+ALTER TABLE
+
+ALTER SEQUENCE
+
+CREATE TABLE
+
+ALTER TABLE
+
+CREATE SEQUENCE
+
+ALTER TABLE
+
+ALTER SEQUENCE
+
+CREATE TABLE
+
+ALTER TABLE
+
+CREATE SEQUENCE
+
+ALTER TABLE
+
+ALTER SEQUENCE
+
+CREATE TABLE
+
+ALTER TABLE
+
+CREATE SEQUENCE
+
+ALTER TABLE
+
+ALTER SEQUENCE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+COPY 100
+
+COPY 100
+
+COPY 100
+
+COPY 2
+
+COPY 100
+
+COPY 100
+
+COPY 2
+
+COPY 100
+
+COPY 100
+
+COPY 100
+
+ setval 
+
+--------
+
+    100
+
+(1 row)
+
+
+
+ setval 
+
+--------
+
+    100
+
+(1 row)
+
+
+
+ setval 
+
+--------
+
+      2
+
+(1 row)
+
+
+
+ setval 
+
+--------
+
+    100
+
+(1 row)
+
+
+
+ setval 
+
+--------
+
+    100
+
+(1 row)
+
+
+
+ setval 
+
+--------
+
+      1
+
+(1 row)
+
+
+
+ setval 
+
+--------
+
+    100
+
+(1 row)
+
+
+
+ setval 
+
+--------
+
+    100
+
+(1 row)
+
+
+
+ setval 
+
+--------
+
+    100
+
+(1 row)
+
+
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+ALTER TABLE
+
+postgres@al-VirtualBox:~$ psql -Ugb_user vk_staging -h127.0.0.1
+
+Password for user gb_user: 
+
+psql (14.7 (Ubuntu 14.7-0ubuntu0.22.04.1))
+
+SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, bits: 256, compression: off)
+
+Type "help" for help.
+
+vk_staging=> \d
+
+                    List of relations
+
+ Schema |            Name            |   Type   |  Owner  
+
+--------+----------------------------+----------+---------
+
+ public | communities                | table    | gb_user
+
+ public | communities_id_seq         | sequence | gb_user
+
+ public | communities_users          | table    | gb_user
+
+ public | friendship                 | table    | gb_user
+
+ public | friendship_id_seq          | sequence | gb_user
+
+ public | friendship_statuses        | table    | gb_user
+
+ public | friendship_statuses_id_seq | sequence | gb_user
+
+ public | messages                   | table    | gb_user
+
+ public | messages_id_seq            | sequence | gb_user
+
+ public | photo                      | table    | gb_user
+
+ public | photo_id_seq               | sequence | gb_user
+
+ public | subscription_type          | table    | gb_user
+
+ public | subscription_type_id_seq   | sequence | gb_user
+
+ public | subscriptions              | table    | gb_user
+
+ public | subscriptions_id_seq       | sequence | gb_user
+
+ public | users                      | table    | gb_user
+
+ public | users_id_seq               | sequence | gb_user
+
+ public | video                      | table    | gb_user
+
+ public | video_id_seq               | sequence | gb_user
+
+(19 rows)
+
+
+
+vk_staging=> SELECT * FROM users LIMIT 3;
+
+ id | first_name | last_name |      email       |      phone      | main_photo_id |     created_at      
+
+----+------------+-----------+------------------+-----------------+---------------+---------------------
+
+  1 | Nevada     | Fox       | nullam@yahoo.net | (07563) 5744012 |            88 | 2023-08-06 18:26:54
+
+  2 | Herrod     | Alston    | arcu@yahoo.edu   | (0496) 24876351 |            68 | 2023-04-07 14:33:19
+
+  3 | Stacy      | Christian | nam.ac@icloud.ca | (014) 75769946  |            15 | 2023-01-20 01:25:17
+
+(3 rows)
+
+
+
+vk_staging=> SELECT * FROM communities LIMIT 3;
+
+ id |        name        | creator_id |     created_at      
+
+----+--------------------+------------+---------------------
+
+  1 | id sapien. Cras    |          4 | 2022-07-28 10:59:53
+
+  2 | libero est, congue |          7 | 2024-02-17 04:52:17
+
+  3 | dictum magna. Ut   |         65 | 2023-10-26 13:39:53
+
+(3 rows)
+
+
+
+
+vk_staging=> SELECT * FROM subscriptions LIMIT 3;
+
+ id | subscriber_id | subscription_id | subscription_type | subscription_status |     created_at      
+
+----+---------------+-----------------+-------------------+---------------------+---------------------
+
+  1 |             6 |              63 |                 2 | true                | 2022-09-24 08:38:56
+
+  2 |            51 |               9 |                 2 | false               | 2023-05-30 02:58:40
+
+  3 |             5 |              56 |                 2 | false               | 2022-06-03 11:30:22
+
+(3 rows)
+
+
+
+vk_staging=> 
+

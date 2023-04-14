@@ -1,0 +1,13 @@
+CREATE TABLE subscriptions (
+id SERIAL PRIMARY KEY,
+subscriber_id INT NOT NULL,
+subscription_id INT NOT NULL,
+subscription_type_id INT NOT NULL,
+subscription_status BOOLEAN,
+created_at TIMESTAMP
+);
+
+CREATE TABLE subscription_type (
+id SERIAL PRIMARY KEY,
+name VARCHAR(30) UNIQUE
+);
