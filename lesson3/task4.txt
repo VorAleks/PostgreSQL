@@ -1,0 +1,3 @@
+ALTER TABLE communities ADD COLUMN members INTEGER [];
+
+UPDATE communities SET members = (SELECT ARRAY_AGG(user_id) FROM communities_users WHERE community_id =17) WHERE id = 17;
