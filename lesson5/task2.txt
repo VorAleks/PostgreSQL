@@ -1,0 +1,28 @@
+al@al-VirtualBox:/var/lib/postgresql$ sudo nano /etc/postgresql/14/main/postgresql.conf
+
+-- shared_preload_libraries = 'pg_stat_statements'
+
+al@al-VirtualBox:/var/lib/postgresql$ sudo systemctl restart postgresql.service
+
+al@al-VirtualBox:/var/lib/postgresql$ sudo su - postgres
+
+postgres@al-VirtualBox:~$ psql
+psql (14.7 (Ubuntu 14.7-0ubuntu0.22.04.1))
+Type "help" for help.
+
+postgres=# \c vk
+You are now connected to database "vk" as user "postgres".
+
+vk=# CREATE EXTENSION pg_stat_statements;
+CREATE EXTENSION
+
+vk=# SELECT * FROM pg_extension;
+  oid  |      extname       | extowner | extnamespace | extrelocatable | extversion | extconfig | extcondition 
+-------+--------------------+----------+--------------+----------------+------------+-----------+--------------
+ 13785 | plpgsql            |       10 |           11 | f              | 1.0        |           | 
+ 16577 | pg_stat_statements |       10 |         2200 | t              | 1.9        |           | 
+(2 rows)
+
+
+
+

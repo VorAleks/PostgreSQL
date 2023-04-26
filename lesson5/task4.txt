@@ -1,0 +1,48 @@
+postgres@al-VirtualBox:~$ pg_dump --insert vk > vk.dump.sql
+
+postgres@al-VirtualBox:~$ ls
+14  vk.dump.sql
+
+postgres@al-VirtualBox:~$ createdb vk_staging
+
+postgres@al-VirtualBox:~$ psql vk_staging < vk.dump.sql
+
+postgres=# \c vk_staging
+You are now connected to database "vk_staging" as user "postgres".
+vk_staging=# \dt
+               List of relations
+ Schema |        Name         | Type  |  Owner  
+--------+---------------------+-------+---------
+ public | communities         | table | gb_user
+ public | communities_users   | table | gb_user
+ public | friendship          | table | gb_user
+ public | friendship_statuses | table | gb_user
+ public | messages            | table | gb_user
+ public | photo               | table | gb_user
+ public | profiles            | table | gb_user
+ public | subscription_type   | table | gb_user
+ public | subscriptions       | table | gb_user
+ public | users               | table | gb_user
+ public | video               | table | gb_user
+(11 rows)
+
+vk_staging=# SELECT * FROM users LIMIT 3;
+
+id | first_name | last_name |                email                |      phone      
+----+------------+-----------+-------------------------------------+-----------------
+  7 | John       | Smith     | euismod.ac.fermentum@protonmail.org | (034333) 288679
+  1 | Nevada     | Fox       | nullam@yahoo.net                    | (07563) 5744012
+  2 | Herrod     | Alston    | arcu@yahoo.edu                      | (0496) 24876351
+(3 rows)
+
+vk_staging=# SELECT * FROM messages LIMIT 3;
+
+ id | from_user_id | to_user_id |                                                                  body                                                                  | is_important | is_delivered |     created_at      
+----+--------------+------------+----------------------------------------------------------------------------------------------------------------------------------------+--------------+--------------+---------------------
+  1 |           89 |          4 | quis massa. Mauris vestibulum, neque sed dictum eleifend, nunc risus varius orci, in consequat                                         | t            | t            | 2024-01-20 15:48:08
+  2 |           40 |         32 | id, libero. Donec consectetuer mauris id sapien. Cras dolor dolor, tempus non, lacinia at, iaculis quis,                               | f            | f            | 2022-09-18 09:36:10
+  3 |           81 |         15 | nunc nulla vulputate dui, nec tempus mauris erat eget ipsum. Suspendisse sagittis. Nullam vitae diam. Proin dolor. Nulla semper tellus | f            | t            | 2023-04-04 09:14:14
+(3 rows)
+
+
+
