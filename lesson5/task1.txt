@@ -1,0 +1,84 @@
+postgres=# CREATE ROLE serovfedor LOGIN;
+CREATE ROLE
+
+postgres=# ALTER ROLE serovfedor WITH PASSWORD 'some_password';
+ALTER ROLE
+
+postgres=# CREATE ROLE belovroman LOGIN;
+CREATE ROLE
+
+postgres=# ALTER ROLE belovroman WITH PASSWORD 'some_password';
+ALTER ROLE
+
+postgres=# CREATE ROLE analytic;
+CREATE ROLE
+
+postgres=# CREATE ROLE tester;
+CREATE ROLE
+
+postgres=# GRANT analytic TO serovfedor;
+GRANT ROLE
+
+postgres=# GRANT tester TO belovroman;
+GRANT ROLE
+
+postgres=# \c vk
+You are now connected to database "vk" as user "postgres".
+
+vk=# GRANT ALL ON ALL TABLES IN SCHEMA public TO tester;
+GRANT
+
+vk=# GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO tester;
+GRANT
+
+vk=# GRANT SELECT ON ALL TABLES IN SCHEMA public TO analytic;
+GRANT
+
+vk=# GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO analytic;
+GRANT
+
+postgres@al-VirtualBox:~$ psql -U belovroman -d vk -h 127.0.0.1 -W
+Password: 
+psql (14.7 (Ubuntu 14.7-0ubuntu0.22.04.1))
+SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+vk=> SELECT * FROM users WHERE id = 7;
+ id | first_name | last_name |                email                |      phone      | main_photo_id |     created_at      |                      user_contacts                      
+----+------------+-----------+-------------------------------------+-----------------+---------------+---------------------+---------------------------------------------------------
+  7 | John       | Burch     | euismod.ac.fermentum@protonmail.org | (034333) 288679 |            46 | 2023-04-15 18:30:24 | ("(034333) 288679",euismod.ac.fermentum@protonmail.org)
+(1 row)
+
+vk=> update users SET last_name = 'Smith' WHERE id = 7;
+UPDATE 1
+
+vk=> SELECT * FROM users WHERE id = 7;
+ id | first_name | last_name |                email                |      phone      | main_photo_id |     created_at      |                      user_contacts                      
+----+------------+-----------+-------------------------------------+-----------------+---------------+---------------------+---------------------------------------------------------
+  7 | John       | Smith     | euismod.ac.fermentum@protonmail.org | (034333) 288679 |            46 | 2023-04-15 18:30:24 | ("(034333) 288679",euismod.ac.fermentum@protonmail.org)
+(1 row)
+vk=> \q
+
+postgres@al-VirtualBox:~$ psql -U serovfedor -d vk -h 127.0.0.1 -W
+Password: 
+psql (14.7 (Ubuntu 14.7-0ubuntu0.22.04.1))
+SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+vk=> SELECT * FROM users WHERE id = 15;
+ id | first_name | last_name |            email            |      phone      | main_photo_id |     created_at      |                  user_contacts                  
+----+------------+-----------+-----------------------------+-----------------+---------------+---------------------+-------------------------------------------------
+ 15 | Brock      | Knowles   | volutpat.ornare@outlook.net | (0635) 43337928 |            41 | 2024-02-06 16:21:24 | ("(0635) 43337928",volutpat.ornare@outlook.net)
+(1 row)
+
+vk=> update users SET last_name = 'Smith' WHERE id = 15;
+ERROR:  permission denied for table users
+
+
+
+
+
+
+
+
+
