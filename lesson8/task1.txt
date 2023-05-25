@@ -1,0 +1,57 @@
+EXPLAIN ANALYSE SELECT 
+ id
+ FROM users
+ WHERE id NOT IN (
+	 SELECT DISTINCT
+      users.id
+      FROM users
+      LEFT JOIN friendship
+        ON users.id = friendship.requested_by_user_id
+	    OR users.id = friendship.requested_to_user_id
+      LEFT JOIN friendship_statuses
+	    ON friendship.status_id = friendship_statuses.id
+	  WHERE status_id = 1);
+                                                                     QUERY PLAN
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+---
+ Seq Scan on users  (cost=103.53..108.78 rows=50 width=4) (actual time=4.292..4.374 rows=33 loops=1)
+   Filter: (NOT (hashed SubPlan 1))
+   Rows Removed by Filter: 67
+   SubPlan 1
+     ->  Unique  (cost=0.14..103.28 rows=100 width=4) (actual time=0.154..4.215 rows=67 loops=1)
+           ->  Nested Loop  (cost=0.14..103.02 rows=103 width=4) (actual time=0.153..4.084 rows=104 loops=1)
+                 Join Filter: ((users_1.id = friendship.requested_by_user_id) OR (users_1.id = friendship.requested_to_user_id))
+                 Rows Removed by Join Filter: 5096
+                 ->  Index Only Scan using users_pkey on users users_1  (cost=0.14..9.64 rows=100 width=4) (actual time=0.020..0.106 rows=100 loops=
+1)
+                       Heap Fetches: 37
+                 ->  Materialize  (cost=0.00..2.51 rows=52 width=12) (actual time=0.000..0.011 rows=52 loops=100)
+                       ->  Seq Scan on friendship  (cost=0.00..2.25 rows=52 width=12) (actual time=0.008..0.050 rows=52 loops=1)
+                             Filter: (status_id = 1)
+                             Rows Removed by Filter: 48
+ Planning Time: 0.272 ms
+ Execution Time: 4.424 ms
+(16 строк)
+
+vk=> SELECT indexname FROM pg_indexes WHERE tablename = 'friendship';
+    indexname
+-----------------
+ friendship_pkey
+(1 строка)
+
+vk=> SELECT indexname FROM pg_indexes WHERE tablename = 'friendship_statuses';
+          indexname
+------------------------------
+ friendship_statuses_name_key
+ friendship_statuses_pkey
+(2 строки)
+
+vk=> CREATE INDEX friendship_requested_by_user_id_fk ON friendship (requested_by_user_id);
+CREATE INDEX
+
+vk=> CREATE INDEX friendship_requested_to_user_id_fk ON friendship (requested_to_user_id);
+CREATE INDEX
+
+vk=> CREATE INDEX friendship_status_id_fk ON friendship (status_id);
+CREATE INDEX

@@ -1,0 +1,88 @@
+EXPLAIN ANALYSE SELECT DISTINCT
+  communities.id,
+  communities.name,
+  AVG(video.size) OVER (PARTITION BY communities.id) AS avg_size_video,
+  users.id,
+  users.first_name,
+  users.last_name
+  FROM  video
+    JOIN users
+      ON users.id = video.owner_id 
+    JOIN  communities_users
+      ON users.id = communities_users.user_id
+    RIGHT JOIN communities
+      ON communities_users.community_id = communities.id
+  ORDER BY avg_size_video DESC;
+
+                                                                         QUERY PLAN
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+-------------------
+ Unique  (cost=26.07..27.82 rows=100 width=70) (actual time=3.434..3.722 rows=125 loops=1)
+---------------------------------------------------------------------------------------------------------------------------------------
+------------------------
+ Unique  (cost=26.07..27.82 rows=100 width=70) (actual time=3.434..3.722 rows=125 loops=1)
+   ->  Sort  (cost=26.07..26.32 rows=100 width=70) (actual time=3.433..3.477 rows=160 loops=1)
+         Sort Key: (avg(video.size) OVER (?)) DESC, communities.id, communities.name, users.id, users.first_name, users.last_name
+         Sort Method: quicksort  Memory: 39kB
+         ->  WindowAgg  (cost=20.99..22.74 rows=100 width=70) (actual time=1.858..2.688 rows=160 loops=1)
+               ->  Sort  (cost=20.99..21.24 rows=100 width=42) (actual time=1.725..1.777 rows=160 loops=1)
+                     Sort Key: communities.id
+                     Sort Method: quicksort  Memory: 38kB
+                     ->  Hash Right Join  (cost=13.02..17.67 rows=100 width=42) (actual time=0.958..1.435 rows=160 loops=1)
+                           Hash Cond: (communities_users.community_id = communities.id)
+                           ->  Hash Join  (cost=9.77..14.15 rows=100 width=25) (actual time=0.709..0.980 rows=108 loops=1)
+                                 Hash Cond: (video.owner_id = users.id)
+                                 ->  Seq Scan on video  (cost=0.00..3.00 rows=100 width=8) (actual time=0.026..0.075 rows=100 loops=1)
+                                 ->  Hash  (cost=8.52..8.52 rows=100 width=25) (actual time=0.634..0.637 rows=99 loops=1)
+                                       Buckets: 1024  Batches: 1  Memory Usage: 14kB                                       ->  Hash Join  (cost=6.25..8.52 rows=100 width=25) (actual time=0.261..0.464 rows=99 loops=1)
+                                             Hash Cond: (communities_users.user_id = users.id)
+                                             ->  Seq Scan on communities_users  (cost=0.00..2.00 rows=100 width=8) (actual time=0.016..
+0.057 rows=100 loops=1)
+                                             ->  Hash  (cost=5.00..5.00 rows=100 width=17) (actual time=0.204..0.205 rows=100 loops=1)                                                   Buckets: 1024  Batches: 1  Memory Usage: 13kB
+                                                   ->  Seq Scan on users  (cost=0.00..5.00 rows=100 width=17) (actual time=0.013..0.092
+ rows=100 loops=1)
+                           ->  Hash  (cost=2.00..2.00 rows=100 width=21) (actual time=0.207..0.207 rows=100 loops=1)
+                                 Buckets: 1024  Batches: 1  Memory Usage: 14kB                                 ->  Seq Scan on communities  (cost=0.00..2.00 rows=100 width=21) (actual time=0.023..0.088 rows=100 lo
+ops=1)
+ Planning Time: 1.231 ms
+ Execution Time: 3.901 ms
+(26 cтрок)
+
+vk=> SELECT indexname FROM pg_indexes WHERE tablename = 'users';
+    indexname
+-----------------
+ users_email_key
+ users_phone_key
+ users_pkey
+(3 строки)
+
+vk=> SELECT indexname FROM pg_indexes WHERE tablename = 'video';
+ indexname
+------------
+ video_pkey
+(1 строка)
+
+vk=> CREATE INDEX video_ownert_ide_fk ON video (owner_id);
+CREATE INDEX
+
+vk=> CREATE INDEX video_owner_id_fk ON video (owner_id);
+CREATE INDEX
+
+vk=> SELECT indexname FROM pg_indexes WHERE tablename = 'communities_users';
+      indexname
+----------------------
+ communities_users_pk
+(1 строка)
+
+vk=> CREATE INDEX communities_users_user_id_fk ON communities_users (user_id);
+CREATE INDEX
+
+vk=> SELECT indexname FROM pg_indexes WHERE tablename = 'communities';
+      indexname
+----------------------
+ communities_name_key
+ communities_pkey
+(2 строки)
+
+
